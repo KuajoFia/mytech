@@ -60,11 +60,6 @@ export default function AdminLoginPage() {
               {loading ? "Connexion…" : "Se connecter"}
             </Button>
           </form>
-          <div className="mt-4 p-3 bg-secondary rounded text-xs text-muted-foreground">
-            <strong className="text-foreground">Compte démo :</strong><br />
-            Email : <code>admin@agbe-tech.com</code><br />
-            Mot de passe : <code>agbe-admin-2026</code>
-          </div>
           <p className="text-xs text-center text-muted-foreground mt-4">
             <Link href="/" className="hover:text-brand">← Retour au site</Link>
           </p>

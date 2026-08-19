@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { db } from "@/lib/db";
-import { getSession } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
 
-async function requireAdmin() {
-  const session = await getSession();
-  if (!session || (session.role !== "ADMIN" && session.role !== "STAFF")) {
-    return null;
-  }
-  return session;
-}
+const Schema = z.object({
+  status: z.enum(["NEW", "IN_PROGRESS", "TREATED"]),
+  note: z.string().max(500).optional(),
+});
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   if (!(await requireAdmin())) {
@@ -16,13 +14,21 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   }
   try {
     const { id } = await params;
-    const { status } = await req.json();
-    if (!["NEW", "IN_PROGRESS", "TREATED"].includes(status)) {
-      return NextResponse.json({ error: "Statut invalide" }, { status: 400 });
+    const json = await req.json().catch(() => null);
+    const parsed = Schema.safeParse(json);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? "Données invalides" },
+        { status: 400 }
+      );
     }
-    const updated = await db.serviceRequest.update({ where: { id }, data: { status } });
+    const updated = await db.serviceRequest.update({
+      where: { id },
+      data: { status: parsed.data.status },
+    });
     return NextResponse.json(updated);
   } catch (e: any) {
-    return NextResponse.json({ error: e?.message ?? "Erreur" }, { status: 500 });
+    console.error("admin devis PATCH", e);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }

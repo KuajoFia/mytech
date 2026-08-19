@@ -91,7 +91,7 @@ export default function CartPage() {
               <CardContent className="p-4 flex items-center gap-4">
                 <Link href={`/boutique/${item.slug}`} className="shrink-0">
                   <div className="relative h-20 w-20 rounded-md overflow-hidden bg-secondary">
-                    <Image src={item.image || "/api/placeholder"} alt={item.name} fill className="object-cover" unoptimized />
+                    <Image src={item.image || "/placeholder.png"} alt={item.name} fill sizes="80px" className="object-cover" />
                   </div>
                 </Link>
                 <div className="flex-1 min-w-0">

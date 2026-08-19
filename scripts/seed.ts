@@ -515,6 +515,7 @@ async function main() {
     await db.product.create({
       data: {
         ...rest,
+        pricingMode: (rest as any).pricingMode ?? 'PRICE',
         categoryId: category!.id,
         brandId: brand?.id,
         // No local images yet — fall back to /api/placeholder at render time.
@@ -544,16 +545,20 @@ async function main() {
   }
 
   console.log('→ Création d\'un compte admin...');
+  const bcrypt = await import('bcryptjs');
+  const adminPassword = process.env.ADMIN_BOOTSTRAP_PASSWORD || 'agbe-admin-2026';
+  const adminHash = await bcrypt.hash(adminPassword, 10);
   await db.user.create({
     data: {
       phone: '22800000000',
       email: 'admin@agbe-tech.com',
       name: 'Administrateur AGBE-TECH',
       role: 'ADMIN',
-      // NOTE: in production, hash via bcrypt at runtime.
-      passwordHash: 'agbe-admin-2026',
+      passwordHash: adminHash,
     },
   });
+  console.log(`  → Admin créé (mot de passe: ${adminPassword === 'agbe-admin-2026' ? 'défaut démo' : 'env ADMIN_BOOTSTRAP_PASSWORD'}).`);
+  console.log('  → ⚠️  Changez ce mot de passe immédiatement en production via /admin/connexion → /admin/parametres.');
 
   console.log('✓ Seed terminé.');
 }

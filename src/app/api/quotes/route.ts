@@ -12,11 +12,13 @@ export async function POST(req: Request) {
     }
 
     // Find or create a guest user
-    let user = null;
+    let user: { id: string } | null = null;
     if (guestPhone) {
-      user = await db.user.findUnique({ where: { phone: guestPhone } });
-      if (!user) {
-        user = await db.user.create({
+      const found = await db.user.findUnique({ where: { phone: guestPhone } });
+      if (found) {
+        user = { id: found.id };
+      } else {
+        const created = await db.user.create({
           data: {
             phone: guestPhone,
             email: guestEmail || undefined,
@@ -27,6 +29,7 @@ export async function POST(req: Request) {
             nif,
           },
         });
+        user = { id: created.id };
       }
     }
 

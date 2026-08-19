@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { ShoppingCart, FileText, Minus, Plus, CheckCircle2, ShieldCheck, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -39,7 +40,7 @@ export function ProductDetailClient({
   const [qty, setQty] = useState(1);
   const images = safeParse<string[]>(product.images, []);
   const attributes = safeParse<Attribute[]>(product.attributes, []);
-  const cover = images[0] && images[0].length > 0 ? images[0] : "/api/placeholder";
+  const cover = images[0] && images[0].length > 0 ? images[0] : "/placeholder.png";
 
   const isOnRequest = product.pricingMode === "ON_REQUEST";
   const isPromo = product.promoPrice && product.promoPrice < product.regularPrice;
@@ -86,16 +87,27 @@ export function ProductDetailClient({
     <div className="grid gap-8 lg:grid-cols-2">
       {/* Images */}
       <div>
-        <div className="aspect-square rounded-lg overflow-hidden border bg-secondary">
-          { }
-          <img src={cover} alt={product.name} className="w-full h-full object-cover" />
+        <div className="aspect-square rounded-lg overflow-hidden border bg-secondary relative">
+          <Image
+            src={cover}
+            alt={product.name}
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover"
+            priority
+          />
         </div>
         {images.length > 1 && (
           <div className="mt-3 grid grid-cols-4 gap-2">
             {images.map((img, i) => (
-              <div key={i} className="aspect-square rounded border overflow-hidden bg-secondary">
-                { }
-                <img src={img} alt={`${product.name} ${i + 1}`} className="w-full h-full object-cover" />
+              <div key={i} className="aspect-square rounded border overflow-hidden bg-secondary relative">
+                <Image
+                  src={img}
+                  alt={`${product.name} ${i + 1}`}
+                  fill
+                  sizes="(max-width: 1024px) 25vw, 12vw"
+                  className="object-cover"
+                />
               </div>
             ))}
           </div>

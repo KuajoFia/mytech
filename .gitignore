@@ -78,6 +78,7 @@ Caddyfile
 
 # worklog (internal)
 worklog.md
+tool-results/
 
 # Lockfiles (keep bun.lock for reproducible installs)
 # bun.lock

@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+*.log
+dev.log
+server.log
+.env*
+!.env.example
+db
+tests/e2e/test-results
+tests/e2e/playwright-report
+download
+upload
+scripts
+.github
+docs
+README.md

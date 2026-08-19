@@ -38,39 +38,18 @@ export function OrderActions({ order }: OrderActionsProps) {
     }
   }
 
-  async function markPaid() {
-    setBusy(true);
-    try {
-      // Simulate a payment confirmation (in production: webhook from Kkiapay/CinetPay)
-      const res = await fetch(`/api/orders/${order.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          status: "PAID",
-          paymentMethod: order.paymentMethod ?? "TMONEY",
-          paymentRef: `DEMO-${Date.now()}`,
-          note: "Paiement confirmé (démo)",
-        }),
-      });
-      if (!res.ok) throw new Error("Échec");
-      toast.success("Paiement confirmé !", {
-        description: "Le reçu PDF est disponible dans vos documents.",
-      });
-      router.refresh();
-    } catch (e: any) {
-      toast.error("Erreur", { description: e.message });
-    } finally {
-      setBusy(false);
-    }
-  }
-
   // Available actions per status
   const actions: React.ReactNode[] = [];
 
   if (order.status === "AWAITING_PAYMENT") {
+    // Payment is now handled server-side via /api/payments/initiate (Kkiapay/CinetPay).
+    // The "mark as paid" client button was a security vulnerability and has been removed.
+    // The client is redirected to the payment provider, which on success calls the webhook.
     actions.push(
-      <Button key="pay" onClick={markPaid} disabled={busy} className="bg-emerald-600 hover:bg-emerald-700">
-        <CreditCard className="h-4 w-4 mr-1" /> Simuler paiement (T-Money)
+      <Button key="pay" asChild className="bg-emerald-600 hover:bg-emerald-700">
+        <a href={`/api/payments/initiate?orderId=${order.id}`} target="_blank" rel="noopener noreferrer">
+          <CreditCard className="h-4 w-4 mr-1" /> Payer maintenant (T-Money / Flooz)
+        </a>
       </Button>
     );
   }

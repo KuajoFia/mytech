@@ -29,7 +29,7 @@ type ProductCardProps = {
 export function ProductCard({ product }: ProductCardProps) {
   const { add } = useCart();
   const images = safeParse<string[]>(product.images, []);
-  const cover = images[0] && images[0].length > 0 ? images[0] : "/api/placeholder";
+  const cover = images[0] && images[0].length > 0 ? images[0] : "/placeholder.png";
 
   const isOnRequest = product.pricingMode === "ON_REQUEST";
   const isPromo = product.promoPrice && product.promoPrice < product.regularPrice;

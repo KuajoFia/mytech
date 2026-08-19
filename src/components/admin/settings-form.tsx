@@ -26,9 +26,9 @@ type Settings = {
   whatsapp?: string;
   instagram?: string | null;
   facebook?: string | null;
-  kkiapayKey?: string | null;
-  cinetpayKey?: string | null;
-  paydunaKey?: string | null;
+  hasKkiapayKey?: boolean;
+  hasCinetpayKey?: boolean;
+  hasPaydunaKey?: boolean;
 };
 
 export function SettingsForm({ initial }: { initial?: Settings }) {
@@ -146,18 +146,23 @@ export function SettingsForm({ initial }: { initial?: Settings }) {
 
       <Card>
         <CardHeader className="pb-3"><h2 className="font-display font-bold">Paiements (clés agrégateurs)</h2></CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-3">
-          <div>
-            <Label htmlFor="kk">KKiaPay Key</Label>
-            <Input id="kk" type="password" value={form.kkiapayKey ?? ""} onChange={(e) => setForm({ ...form, kkiapayKey: e.target.value })} placeholder="Optionnel — démo" />
-          </div>
-          <div>
-            <Label htmlFor="cp">CinetPay Key</Label>
-            <Input id="cp" type="password" value={form.cinetpayKey ?? ""} onChange={(e) => setForm({ ...form, cinetpayKey: e.target.value })} placeholder="Optionnel — démo" />
-          </div>
-          <div>
-            <Label htmlFor="pd">PayDunya Key</Label>
-            <Input id="pd" type="password" value={form.paydunaKey ?? ""} onChange={(e) => setForm({ ...form, paydunaKey: e.target.value })} placeholder="Optionnel — démo" />
+        <CardContent className="space-y-2">
+          <p className="text-xs text-muted-foreground">
+            Pour des raisons de sécurité, les clés API de paiement sont configurées via variables d'environnement (KKIAPAY_API_KEY, CINETPAY_API_KEY, PAYDUNA_API_KEY), jamais en base de données.
+          </p>
+          <div className="grid gap-2 md:grid-cols-3 pt-2">
+            <div className="flex items-center gap-2 text-sm">
+              <span className={"inline-block w-2 h-2 rounded-full " + (form.hasKkiapayKey ? "bg-emerald-500" : "bg-muted-foreground/30")} />
+              KKiaPay {form.hasKkiapayKey ? "configuré" : "non configuré"}
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <span className={"inline-block w-2 h-2 rounded-full " + (form.hasCinetpayKey ? "bg-emerald-500" : "bg-muted-foreground/30")} />
+              CinetPay {form.hasCinetpayKey ? "configuré" : "non configuré"}
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <span className={"inline-block w-2 h-2 rounded-full " + (form.hasPaydunaKey ? "bg-emerald-500" : "bg-muted-foreground/30")} />
+              PayDunya {form.hasPaydunaKey ? "configuré" : "non configuré"}
+            </div>
           </div>
         </CardContent>
       </Card>

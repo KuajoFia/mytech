@@ -19,7 +19,7 @@ export default async function AdminDashboard() {
     db.order.findMany({
       orderBy: { createdAt: "desc" },
       take: 8,
-      include: { items: true },
+      include: { items: true, user: true },
     }),
     db.product.findMany(),
     db.user.findMany({ where: { role: "CLIENT" }, take: 5, orderBy: { createdAt: "desc" } }),

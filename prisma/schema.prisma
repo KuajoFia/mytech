@@ -1,5 +1,5 @@
 // AGBE-TECH — Prisma schema
-// SQLite for development; switch to MySQL/PostgreSQL in production.
+// SQLite for development; switch to PostgreSQL in production.
 
 generator client {
   provider = "prisma-client-js"
@@ -25,6 +25,8 @@ model User {
   companyName   String?
   rccm          String?
   nif           String?
+  // Soft delete
+  deletedAt     DateTime?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -34,6 +36,11 @@ model User {
   serviceReq    ServiceRequest[]
   reviews       ProductReview[]
   otpCodes      OtpCode[]
+  wishlist      WishlistItem[]
+  notifications Notification[]
+  newsletterSub NewsletterSubscriber?
+  referralsMade Referral[]         @relation("ReferralReferrer")
+  referralsReceived Referral[]     @relation("ReferralReferred")
 }
 
 enum UserRole {
@@ -53,6 +60,9 @@ model OtpCode {
   createdAt DateTime @default(now())
 
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([code])
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -70,6 +80,7 @@ model Category {
   children    Category[] @relation("CategoryTree")
   products    Product[]
   createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Brand {
@@ -79,6 +90,7 @@ model Brand {
   logo      String?
   products  Product[]
   createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Product {
@@ -105,6 +117,8 @@ model Product {
   status          ProductStatus @default(ACTIVE)
   pricingMode     PricingMode @default(PRICE)
   featured        Boolean     @default(false)
+  // Soft delete
+  deletedAt       DateTime?
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
@@ -113,9 +127,13 @@ model Product {
   reviews         ProductReview[]
   orderItems      OrderItem[]
   quoteItems      QuoteItem[]
+  stockMovements  StockMovement[]
+  wishlistItems   WishlistItem[]
 
   @@index([categoryId])
   @@index([brandId])
+  @@index([status])
+  @@index([featured])
 }
 
 enum ProductStatus {
@@ -138,9 +156,13 @@ model ProductReview {
   comment   String?
   published Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   user      User?    @relation(fields: [userId], references: [id])
+
+  @@index([productId])
+  @@index([published])
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -183,11 +205,16 @@ model Order {
   documents       Document[]
   messages        OrderMessage[]
   timeline        OrderTimeline[]
+  payments        PaymentTransaction[]
 
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
 
   user            User?          @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
 }
 
 enum OrderStatus {
@@ -219,9 +246,13 @@ model OrderItem {
   unitPrice  Float
   quantity   Int
   total      Float
+  createdAt  DateTime @default(now())
 
   order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product    Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
 }
 
 model Quote {
@@ -249,6 +280,9 @@ model Quote {
   updatedAt   DateTime     @updatedAt
 
   user        User?        @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([status])
 }
 
 enum QuoteStatus {
@@ -269,9 +303,13 @@ model QuoteItem {
   unitPrice Float
   quantity  Int
   total     Float
+  createdAt DateTime @default(now())
 
   quote     Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id])
+
+  @@index([quoteId])
+  @@index([productId])
 }
 
 model Document {
@@ -284,6 +322,8 @@ model Document {
   createdAt DateTime @default(now())
 
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
 }
 
 enum DocumentType {
@@ -304,6 +344,8 @@ model OrderMessage {
   createdAt DateTime @default(now())
 
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
 }
 
 model OrderTimeline {
@@ -314,6 +356,31 @@ model OrderTimeline {
   createdAt DateTime @default(now())
 
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Payments (Phase 1.2)
+// ─────────────────────────────────────────────────────────────
+
+model PaymentTransaction {
+  id          String   @id @default(cuid())
+  orderId     String
+  reference   String   @unique // client-generated idempotency key
+  provider    String   // kkiapay | cinetpay | paydunya | manual
+  amount      Float
+  currency    String   @default("XOF")
+  status      String   @default("PENDING") // PENDING | SUCCESS | FAILED | REFUNDED
+  rawPayload  String?  // JSON of webhook payload for audit
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([status])
+  @@index([reference])
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -333,6 +400,7 @@ model Service {
   faqs        String   @default("[]") // JSON [{q,a}]
   order       Int      @default(0)
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model ServiceRequest {
@@ -347,9 +415,13 @@ model ServiceRequest {
   attachments String   @default("[]") // JSON array of URLs
   status      String   @default("NEW") // NEW | IN_PROGRESS | TREATED
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   user        User?    @relation(fields: [userId], references: [id])
   userId      String?
+
+  @@index([userId])
+  @@index([status])
 }
 
 model Realization {
@@ -364,6 +436,7 @@ model Realization {
   date        DateTime?
   featured    Boolean  @default(false)
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Testimonial {
@@ -375,6 +448,7 @@ model Testimonial {
   content    String
   published Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model BlogPost {
@@ -404,8 +478,12 @@ model Address {
   region    String?
   phone     String?
   isDefault Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Settings {
@@ -425,8 +503,119 @@ model Settings {
   whatsapp         String  @default("22898897914")
   instagram        String?
   facebook         String?
-  // Payements
+  // Payments — NOTE: real API keys MUST live in env vars, NOT here.
+  // These fields are kept only for backward-compat and should be empty in prod.
   kkiapayKey       String?
   cinetpayKey      String?
   paydunaKey       String?
+  updatedAt        DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────────
+// Phase 4 — New business features
+// ─────────────────────────────────────────────────────────────
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
+model Coupon {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  type        String   @default("PERCENT") // PERCENT | FIXED
+  value       Float    // percent (0-100) or fixed amount in FCFA
+  minOrder    Float    @default(0)
+  maxUses     Int      @default(0) // 0 = unlimited
+  usesCount   Int      @default(0)
+  expiresAt   DateTime?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([code])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String?
+  channel   String   @default("IN_APP") // IN_APP | EMAIL | WHATSAPP | SMS
+  subject   String
+  body      String
+  status    String   @default("PENDING") // PENDING | SENT | FAILED
+  sentAt    DateTime?
+  createdAt DateTime @default(now())
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  active    Boolean  @default(true)
+  confirmToken String?
+  confirmed Boolean  @default(false)
+  userId    String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model Referral {
+  id          String   @id @default(cuid())
+  referrerId  String
+  referredId  String   @unique
+  code        String   @unique
+  rewardType  String   @default("CREDIT") // CREDIT | PERCENT
+  rewardValue Float    @default(0)
+  status      String   @default("PENDING") // PENDING | COMPLETED
+  createdAt   DateTime @default(now())
+
+  referrer    User     @relation("ReferralReferrer", fields: [referrerId], references: [id])
+  referred    User     @relation("ReferralReferred", fields: [referredId], references: [id])
+
+  @@index([referrerId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  action    String   // e.g. "ORDER_STATUS_CHANGED"
+  targetType String? // "Order" | "Product" | "User" | "Settings"
+  targetId  String?
+  metadata  String   @default("{}") // JSON
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([actorId])
+  @@index([action])
+  @@index([targetType, targetId])
+}
+
+model StockMovement {
+  id        String   @id @default(cuid())
+  productId String
+  delta     Int      // +in / -out
+  reason    String   // ORDER | RESTOCK | ADJUSTMENT | RETURN
+  refId     String?  // orderId or purchaseId
+  note      String?
+  createdAt DateTime @default(now())
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([reason])
 }

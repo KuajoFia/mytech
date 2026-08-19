@@ -20,6 +20,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+// ISR — refresh article every hour
+export const revalidate = 3600;
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await db.blogPost.findUnique({ where: { slug } });

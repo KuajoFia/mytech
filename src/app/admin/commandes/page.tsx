@@ -4,10 +4,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ORDER_STATUS_LABELS, ORDER_STATUS_COLORS, formatFCFA, formatDate } from "@/lib/utils";
+import type { OrderStatus } from "@prisma/client";
 
 export default async function AdminOrdersPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
   const sp = await searchParams;
-  const where = sp.status && sp.status !== "ALL" ? { status: sp.status } : {};
+  const statusFilter: OrderStatus | undefined =
+    sp.status && sp.status !== "ALL" && !sp.status.startsWith("_")
+      ? (sp.status as OrderStatus)
+      : undefined;
+  const where = statusFilter ? { status: statusFilter } : {};
   const orders = await db.order.findMany({
     where,
     orderBy: { createdAt: "desc" },

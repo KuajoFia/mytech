@@ -1,6 +1,8 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { formatFCFA, formatDate, safeParse } from "@/lib/utils";
+import { getSession } from "@/lib/auth";
+import { getCachedSettings } from "@/lib/settings-cache";
 import { Settings } from "@prisma/client";
 
 type DocContext = {
@@ -29,6 +31,10 @@ const DOC_PREFIX: Record<string, string> = {
 };
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
   const { id } = await params;
   const docType = req.nextUrl.searchParams.get("type") as keyof typeof DOC_LABELS;
   if (!docType || !DOC_LABELS[docType]) {
@@ -39,11 +45,17 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     where: { id },
     include: { items: { include: { product: true } }, documents: true },
   });
-  const settings = await db.settings.findFirst();
-
   if (!order) {
     return new Response("Commande introuvable", { status: 404 });
   }
+
+  // Authz: admin/staff can see all; client only their own
+  const isStaff = session.role === "ADMIN" || session.role === "STAFF";
+  if (!isStaff && order.userId !== session.id && order.guestPhone !== session.phone) {
+    return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
+  }
+
+  const settings = await getCachedSettings();
 
   const year = new Date().getFullYear();
   const seq = order.documents.length + 1;
@@ -61,10 +73,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
   const html = renderDocument({ order, settings }, docType, number);
 
+  // Allow ?download=1 to force download (Content-Disposition: attachment)
+  const download = req.nextUrl.searchParams.get("download") === "1";
   return new Response(html, {
     headers: {
       "Content-Type": "text/html; charset=utf-8",
-      "Content-Disposition": `inline; filename="${number}.html"`,
+      "Content-Disposition": `${download ? "attachment" : "inline"}; filename="${number}.html"`,
+      "Cache-Control": "private, no-cache",
     },
   });
 }
