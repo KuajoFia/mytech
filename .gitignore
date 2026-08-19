@@ -33,9 +33,8 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
-# vercel
+# Vercel local
 .vercel
-
 
 # typescript
 *.tsbuildinfo
@@ -46,10 +45,8 @@ local-*
 *.log
 dev.log
 dev.out.log
-test
-prompt
-
 server.log
+prompt
 
 # Skills directory (internal tooling)
 /skills/
@@ -67,11 +64,11 @@ server.log
 # Uploads (user content)
 /upload/
 
-# Caddyfile (proxy config — environment specific)
-Caddyfile
+# Caddyfile is tracked in repo (deployment config)
+# Caddyfile
 
-# tests scaffolding
-/tests/
+# tests are tracked in repo
+# /tests/
 
 # examples
 /examples/

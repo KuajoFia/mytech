@@ -1,0 +1,53 @@
+# docker-compose.yml — AGBE-TECH stack for VPS (self-hosted)
+#
+# Usage:
+#   1. Copy .env.example to .env and fill values
+#   2. docker compose up -d
+#
+# Components:
+#   - app: Next.js app on port 3000
+#   - postgres: PostgreSQL 16 for production data
+#
+# For reverse proxy + SSL, see the Caddyfile (already in repo) or use nginx-proxy.
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agbe-tech-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://agbe:${POSTGRES_PASSWORD:-agbe_password}@postgres:5432/agbe?schema=public
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: agbe-tech-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=agbe
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-agbe_password}
+      - POSTGRES_DB=agbe
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agbe -d agbe"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    # Don't expose DB externally in production
+    # ports:
+    #   - "5432:5432"
+
+volumes:
+  pgdata:
