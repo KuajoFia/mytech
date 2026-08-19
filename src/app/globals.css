@@ -1,0 +1,208 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* AGBE-TECH Charte graphique
+   Bleu institutionnel: #0A3D91 / #1449A5
+   Blanc + gris foncé
+   Typographies: Montserrat/Poppins (titres) + Inter/Open Sans (corps)
+*/
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-montserrat);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: #FFFFFF;
+  --foreground: #1A1F2C;
+  --card: #FFFFFF;
+  --card-foreground: #1A1F2C;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1F2C;
+
+  /* AGBE-TECH brand colors */
+  --primary: #0A3D91;
+  --primary-foreground: #FFFFFF;
+  --primary-light: #1449A5;
+  --primary-dark: #072D6B;
+
+  --secondary: #F5F7FA;
+  --secondary-foreground: #1A1F2C;
+  --muted: #F1F4F8;
+  --muted-foreground: #5C6678;
+  --accent: #FFB800; /* jaune accent Togo */
+  --accent-foreground: #1A1F2C;
+
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #0A3D91;
+
+  --chart-1: #0A3D91;
+  --chart-2: #FFB800;
+  --chart-3: #1449A5;
+  --chart-4: #10B981;
+  --chart-5: #DC2626;
+
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1A1F2C;
+  --sidebar-primary: #0A3D91;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F5F7FA;
+  --sidebar-accent-foreground: #0A3D91;
+  --sidebar-border: #E2E8F0;
+  --sidebar-ring: #0A3D91;
+}
+
+.dark {
+  --background: #0B1220;
+  --foreground: #F1F4F8;
+  --card: #111827;
+  --card-foreground: #F1F4F8;
+  --popover: #111827;
+  --popover-foreground: #F1F4F8;
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1F2937;
+  --secondary-foreground: #F1F4F8;
+  --muted: #1F2937;
+  --muted-foreground: #94A3B8;
+  --accent: #FFB800;
+  --accent-foreground: #1A1F2C;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #1F2937;
+  --input: #1F2937;
+  --ring: #2563EB;
+  --sidebar: #0B1220;
+  --sidebar-foreground: #F1F4F8;
+  --sidebar-primary: #2563EB;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #1F2937;
+  --sidebar-accent-foreground: #2563EB;
+  --sidebar-border: #1F2937;
+  --sidebar-ring: #2563EB;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01";
+    font-variation-settings: "opsz" 32;
+  }
+  h1, h2, h3, h4, h5 {
+    @apply font-display font-bold tracking-tight;
+  }
+}
+
+/* Utility classes for AGBE-TECH */
+.bg-brand-gradient {
+  background: linear-gradient(135deg, #0A3D91 0%, #1449A5 60%, #072D6B 100%);
+}
+
+.bg-hero-overlay {
+  background: linear-gradient(180deg, rgba(10,61,145,0.92) 0%, rgba(20,73,165,0.78) 50%, rgba(7,45,107,0.92) 100%);
+}
+
+.text-brand {
+  color: #0A3D91;
+}
+
+.bg-brand {
+  background-color: #0A3D91;
+}
+
+.bg-brand-light {
+  background-color: #1449A5;
+}
+
+.bg-brand-dark {
+  background-color: #072D6B;
+}
+
+.bg-accent-yellow {
+  background-color: #FFB800;
+}
+
+.border-brand {
+  border-color: #0A3D91;
+}
+
+/* Smooth shadow */
+.shadow-brand {
+  box-shadow: 0 10px 30px -10px rgba(10, 61, 145, 0.25);
+}
+
+.shadow-brand-lg {
+  box-shadow: 0 20px 50px -15px rgba(10, 61, 145, 0.35);
+}
+
+/* Hide scrollbar for filter chips row */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth fade-in for client components */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+/* Print styles for PDF */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; color: black; }
+}

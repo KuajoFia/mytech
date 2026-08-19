@@ -1,0 +1,432 @@
+// AGBE-TECH — Prisma schema
+// SQLite for development; switch to MySQL/PostgreSQL in production.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Auth & users
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id            String   @id @default(cuid())
+  email         String?  @unique
+  phone         String   @unique
+  passwordHash  String?
+  name          String
+  role          UserRole @default(CLIENT)
+  // B2B fields
+  companyName   String?
+  rccm          String?
+  nif           String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  addresses     Address[]
+  orders        Order[]
+  quotes        Quote[]
+  serviceReq    ServiceRequest[]
+  reviews       ProductReview[]
+  otpCodes      OtpCode[]
+}
+
+enum UserRole {
+  CLIENT
+  PRO
+  ADMIN
+  STAFF
+}
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  userId    String
+  code      String
+  channel   String   @default("WHATSAPP") // SMS | WHATSAPP
+  consumed  Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────────────────────
+// Catalog (boutique)
+// ─────────────────────────────────────────────────────────────
+
+model Category {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  description String?
+  icon        String?
+  parentId    String?
+  parent      Category? @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  products    Product[]
+  createdAt   DateTime  @default(now())
+}
+
+model Brand {
+  id        String    @id @default(cuid())
+  slug      String     @unique
+  name      String
+  logo      String?
+  products  Product[]
+  createdAt DateTime   @default(now())
+}
+
+model Product {
+  id              String      @id @default(cuid())
+  slug            String      @unique
+  name            String
+  sku             String      @unique
+  barcode         String?
+  shortDesc       String
+  description     String
+  categoryId      String
+  brandId         String?
+  regularPrice    Float
+  promoPrice      Float?
+  stock           Int         @default(0)
+  stockThreshold   Int         @default(3)
+  weight          Float?
+  dimensions      String?
+  warranty        String?
+  images          String      @default("[]") // JSON array of URLs
+  pdfSpec         String?
+  tags            String      @default("[]") // JSON array
+  attributes      String      @default("[]") // JSON array of {name,value} for family-specific tech specs
+  status          ProductStatus @default(ACTIVE)
+  pricingMode     PricingMode @default(PRICE)
+  featured        Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  category        Category    @relation(fields: [categoryId], references: [id])
+  brand           Brand?      @relation(fields: [brandId], references: [id])
+  reviews         ProductReview[]
+  orderItems      OrderItem[]
+  quoteItems      QuoteItem[]
+
+  @@index([categoryId])
+  @@index([brandId])
+}
+
+enum ProductStatus {
+  ACTIVE
+  DRAFT
+  ARCHIVED
+}
+
+enum PricingMode {
+  PRICE       // prix affiché
+  ON_REQUEST  // prix sur demande → bouton devis
+}
+
+model ProductReview {
+  id        String   @id @default(cuid())
+  productId String
+  userId    String?
+  authorName String
+  rating    Int
+  comment   String?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Cart → Orders → Quotes → Documents lifecycle
+// ─────────────────────────────────────────────────────────────
+
+model Order {
+  id              String         @id @default(cuid())
+  number          String         @unique // BC-2026-XXX
+  userId          String?
+  guestName       String?
+  guestPhone      String?
+  guestEmail      String?
+
+  status          OrderStatus    @default(QUOTE_REQUESTED)
+  // Customer / billing
+  companyName     String?
+  rccm            String?
+  nif             String?
+  billingAddress  String?
+  // Shipping
+  deliveryMode    DeliveryMode
+  shippingAddress String?
+  shippingFee     Float          @default(0)
+  shippingZone    String?
+
+  subtotal        Float
+  discount        Float          @default(0)
+  vat             Float          @default(0) // 18%
+  total           Float
+
+  paymentMethod   String?        // TMONEY | FLOOZ | TRANSFER | CASH
+  paymentRef      String?
+  paidAt          DateTime?
+
+  proformaId      String?      @unique
+  proforma        Quote?       @relation(fields: [proformaId], references: [id])
+
+  items           OrderItem[]
+  documents       Document[]
+  messages        OrderMessage[]
+  timeline        OrderTimeline[]
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  user            User?          @relation(fields: [userId], references: [id])
+}
+
+enum OrderStatus {
+  QUOTE_REQUESTED
+  PROFORMA_ISSUED
+  ORDERED
+  AWAITING_PAYMENT
+  PAID
+  PREPARING
+  AWAITING_DELIVERY
+  DELIVERING
+  DELIVERED
+  CANCELLED
+  RETURNED
+}
+
+enum DeliveryMode {
+  PICKUP_STORE   // retrait magasin Kégué (gratuit)
+  LOME_DELIVERY  // livraison Lomé & environs
+  OTHER_REGIONS  // sur devis
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String
+  productId  String
+  name       String
+  sku        String
+  unitPrice  Float
+  quantity   Int
+  total      Float
+
+  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product    Product @relation(fields: [productId], references: [id])
+}
+
+model Quote {
+  id          String       @id @default(cuid())
+  number      String       @unique // PF-2026-XXX
+  userId      String?
+  guestName   String?
+  guestPhone  String?
+  guestEmail  String?
+  companyName String?
+  rccm        String?
+  nif         String?
+
+  status      QuoteStatus  @default(DRAFT)
+  validUntil  DateTime
+  subtotal    Float
+  discount    Float        @default(0)
+  vat         Float        @default(0)
+  total       Float
+
+  items       QuoteItem[]
+  order       Order?
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  user        User?        @relation(fields: [userId], references: [id])
+}
+
+enum QuoteStatus {
+  DRAFT
+  ISSUED       // émise au client
+  APPROVED     // client a cliqué « Bon pour accord »
+  REFUSED
+  EXPIRED
+  CONVERTED    // transformée en commande
+}
+
+model QuoteItem {
+  id        String  @id @default(cuid())
+  quoteId   String
+  productId String
+  name      String
+  sku       String
+  unitPrice Float
+  quantity  Int
+  total     Float
+
+  quote     Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  orderId   String
+  number    String   @unique // PF-2026-XXX, BC-2026-XXX, FA-2026-XXX, BL-2026-XXX, AV-2026-XXX
+  type      DocumentType
+  filePath  String?
+  dataJson  String   // JSON payload for live regeneration
+  createdAt DateTime @default(now())
+
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+enum DocumentType {
+  ACKNOWLEDGE     // accusé de réception
+  PROFORMA        // PF-
+  PURCHASE_ORDER  // BC-
+  PAYMENT_REMINDER
+  RECEIPT         // FA- (facture acquittée)
+  DELIVERY_NOTE   // BL-
+  CREDIT_NOTE     // AV-
+}
+
+model OrderMessage {
+  id        String   @id @default(cuid())
+  orderId   String
+  fromAdmin Boolean  @default(false)
+  body      String
+  createdAt DateTime @default(now())
+
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model OrderTimeline {
+  id        String   @id @default(cuid())
+  orderId   String
+  status    OrderStatus
+  note      String?
+  createdAt DateTime @default(now())
+
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────────────────────
+// Vitrine (services, realisations, blog, testimonials, devis)
+// ─────────────────────────────────────────────────────────────
+
+model Service {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  shortDesc   String
+  description String
+  icon        String
+  image       String?
+  benefits    String   @default("[]") // JSON array of strings
+  interventions String @default("[]") // JSON array of strings
+  faqs        String   @default("[]") // JSON [{q,a}]
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model ServiceRequest {
+  id          String   @id @default(cuid())
+  name        String
+  phone       String
+  email       String?
+  service     String
+  location    String?
+  description String
+  delay       String?
+  attachments String   @default("[]") // JSON array of URLs
+  status      String   @default("NEW") // NEW | IN_PROGRESS | TREATED
+  createdAt   DateTime @default(now())
+
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+model Realization {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  category    String   // solar | camera | network | electricity | telecom
+  client      String?
+  location    String?
+  description String
+  images      String   @default("[]")
+  date        DateTime?
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  company   String?
+  rating    Int      @default(5)
+  content    String
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model BlogPost {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  excerpt   String
+  content   String
+  cover     String?
+  tags      String   @default("[]")
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────────
+// Misc
+// ─────────────────────────────────────────────────────────────
+
+model Address {
+  id        String  @id @default(cuid())
+  userId    String
+  label     String
+  line1     String
+  line2     String?
+  city      String
+  region    String?
+  phone     String?
+  isDefault Boolean @default(false)
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id                String  @id @default("singleton")
+  companyName       String  @default("AGBE-TECH")
+  legalName        String  @default("AGBE-TECH")
+  address          String  @default("Kégué, Rue Kpacha – Lomé, Togo")
+  phone1           String  @default("+228 98 89 79 14")
+  phone2           String  @default("+228 93 90 77 06")
+  email            String  @default("contact@agbe-tech.com")
+  rccm             String  @default("")
+  nif              String  @default("")
+  vatRate          Float   @default(0.18)
+  proformaValidity Int     @default(15) // jours
+  lomeDeliveryFee  Float   @default(2000)
+  otherRegionsFee  Float   @default(0) // sur devis
+  whatsapp         String  @default("22898897914")
+  instagram        String?
+  facebook         String?
+  // Payements
+  kkiapayKey       String?
+  cinetpayKey      String?
+  paydunaKey       String?
+}
