@@ -68,7 +68,7 @@ export default async function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-mesh text-white min-h-[88vh] flex items-center -mt-16 pt-16">
+      <section className="relative overflow-hidden bg-mesh text-white min-h-[92vh] flex items-center -mt-16 pt-16">
         {/* Decorative gradient blobs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-20 -right-20 h-96 w-96 rounded-full bg-accent-yellow/20 blur-3xl animate-float" />
@@ -81,9 +81,9 @@ export default async function HomePage() {
           backgroundSize: "60px 60px",
         }} />
 
-        <div className="container relative mx-auto px-4 py-16 md:py-24 lg:py-28">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 mb-5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm animate-fade-in">
+        <div className="container relative mx-auto px-4 py-16 md:py-20 lg:py-24">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm animate-fade-in">
               <span className="inline-flex h-2 w-2 rounded-full bg-accent-yellow animate-pulse" />
               <span className="text-xs font-medium text-white/90 tracking-wide">Lomé · Togo — Depuis 2014</span>
             </div>
@@ -92,12 +92,12 @@ export default async function HomePage() {
               <span className="text-accent-yellow">solutions technologiques</span> et{" "}
               <span className="text-accent-yellow">énergétiques</span>
             </h1>
-            <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed animate-fade-in-up" style={{ animationDelay: "100ms" }}>
+            <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: "100ms" }}>
               Réseau informatique, vidéosurveillance, électricité bâtiment, panneaux solaires et
               liaison longue distance. AGBE-TECH conçoit, installe et maintient vos infrastructures
               critiques avec professionnalisme.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
+            <div className="mt-8 flex flex-wrap gap-3 justify-center animate-fade-in-up" style={{ animationDelay: "200ms" }}>
               <Button asChild size="lg" className="bg-accent-yellow text-black hover:bg-accent-yellow/90 hover:-translate-y-0.5 transition-all shadow-lg">
                 <Link href="/contact?devis=1">
                   Demander un devis gratuit <ArrowRight className="ml-2 h-4 w-4" />
@@ -109,7 +109,7 @@ export default async function HomePage() {
                 </Link>
               </Button>
             </div>
-            <div className="mt-3 flex items-center gap-2 text-white/70 text-sm">
+            <div className="mt-4 flex items-center justify-center gap-2 text-white/70 text-sm">
               <Phone className="h-4 w-4" />
               <a href="tel:+22898897914" className="hover:text-accent-yellow transition font-medium">
                 +228 98 89 79 14
@@ -120,18 +120,18 @@ export default async function HomePage() {
               </a>
             </div>
 
-            <div className="mt-12 grid grid-cols-3 gap-6 max-w-lg animate-fade-in-up" style={{ animationDelay: "300ms" }}>
-              <div>
+            <div className="mt-14 flex flex-wrap justify-center gap-8 md:gap-16 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+              <div className="text-center">
                 <div className="text-4xl md:text-5xl font-extrabold text-accent-yellow leading-none">12+</div>
-                <div className="text-xs md:text-sm text-white/70 mt-2">ans d'expérience</div>
+                <div className="text-xs md:text-sm text-white/70 mt-2 uppercase tracking-wide">ans d'expérience</div>
               </div>
-              <div className="border-l border-white/20 pl-6">
+              <div className="border-l border-white/20 pl-8 md:pl-16 text-center">
                 <div className="text-4xl md:text-5xl font-extrabold text-accent-yellow leading-none">500+</div>
-                <div className="text-xs md:text-sm text-white/70 mt-2">chantiers livrés</div>
+                <div className="text-xs md:text-sm text-white/70 mt-2 uppercase tracking-wide">chantiers livrés</div>
               </div>
-              <div className="border-l border-white/20 pl-6">
+              <div className="border-l border-white/20 pl-8 md:pl-16 text-center">
                 <div className="text-4xl md:text-5xl font-extrabold text-accent-yellow leading-none">24/7</div>
-                <div className="text-xs md:text-sm text-white/70 mt-2">astreinte</div>
+                <div className="text-xs md:text-sm text-white/70 mt-2 uppercase tracking-wide">astreinte</div>
               </div>
             </div>
           </div>
