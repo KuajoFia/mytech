@@ -10,35 +10,51 @@ export const dynamic = "force-dynamic";
 
 
 export default async function AdminDashboard() {
-  const [
-    orders,
-    recentOrders,
-    products,
-    clients,
-    lowStockProducts,
-    serviceRequests,
-  ] = await Promise.all([
-    db.order.aggregate({ _sum: { total: true }, _count: true }),
-    db.order.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 8,
-      include: { items: true, user: true },
-    }),
-    db.product.findMany(),
-    db.user.findMany({ where: { role: "CLIENT" }, take: 5, orderBy: { createdAt: "desc" } }),
-    db.product.findMany({ where: { stock: { lte: 5 } }, take: 5, include: { brand: true } }),
-    db.serviceRequest.findMany({ where: { status: "NEW" }, orderBy: { createdAt: "desc" }, take: 5 }),
-  ]);
+  let orders: any = { _sum: { total: 0 }, _count: 0 };
+  let recentOrders: any[] = [];
+  let products: any[] = [];
+  let clients: any[] = [];
+  let lowStockProducts: any[] = [];
+  let serviceRequests: any[] = [];
+  let paidCount = 0;
+  let statusGroups: any[] = [];
+  let dbError = false;
+
+  try {
+    [
+      orders,
+      recentOrders,
+      products,
+      clients,
+      lowStockProducts,
+      serviceRequests,
+    ] = await Promise.all([
+      db.order.aggregate({ _sum: { total: true }, _count: true }),
+      db.order.findMany({
+        orderBy: { createdAt: "desc" },
+        take: 8,
+        include: { items: true, user: true },
+      }),
+      db.product.findMany(),
+      db.user.findMany({ where: { role: "CLIENT" }, take: 5, orderBy: { createdAt: "desc" } }),
+      db.product.findMany({ where: { stock: { lte: 5 } }, take: 5, include: { brand: true } }),
+      db.serviceRequest.findMany({ where: { status: "NEW" }, orderBy: { createdAt: "desc" }, take: 5 }),
+    ]);
+
+    paidCount = await db.order.count({ where: { status: "PAID" } });
+
+    // Status distribution
+    statusGroups = await db.order.groupBy({
+      by: ["status"],
+      _count: true,
+    });
+  } catch (e) {
+    console.error("AdminDashboard DB error:", e);
+    dbError = true;
+  }
 
   const revenue = orders._sum.total ?? 0;
   const ordersCount = orders._count;
-  const paidCount = await db.order.count({ where: { status: "PAID" } });
-
-  // Status distribution
-  const statusGroups = await db.order.groupBy({
-    by: ["status"],
-    _count: true,
-  });
 
   const stats = [
     { label: "Revenus (TTC)", value: formatFCFA(revenue), icon: TrendingUp, color: "text-emerald-600" },
@@ -53,6 +69,13 @@ export default async function AdminDashboard() {
         <h1 className="font-display text-2xl font-bold">Tableau de bord</h1>
         <p className="text-sm text-muted-foreground">Vue d&apos;ensemble de l&apos;activité AGBE-TECH</p>
       </div>
+
+      {dbError && (
+        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+          <strong>⚠️ Base de données non accessible.</strong> Les données affichées ci-dessous sont vides car la connexion à PostgreSQL a échoué.
+          Vérifiez la variable <code>DATABASE_URL</code> dans Vercel → Settings → Environment Variables.
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-4">

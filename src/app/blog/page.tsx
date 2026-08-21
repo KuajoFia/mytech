@@ -19,10 +19,17 @@ export const metadata: Metadata = {
 // ISR — refresh blog list every hour
 
 export default async function BlogPage() {
-  const posts = await db.blogPost.findMany({
-    where: { published: true },
-    orderBy: { createdAt: "desc" },
-  });
+  let posts: any[] = [];
+  let dbError = false;
+  try {
+    posts = await db.blogPost.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (e) {
+    console.error("BlogPage DB error:", e);
+    dbError = true;
+  }
 
   return (
     <>
@@ -40,6 +47,11 @@ export default async function BlogPage() {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
+          {dbError && (
+            <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+              <strong>Base de données en cours d&apos;initialisation.</strong> Les articles du blog seront affichés prochainement.
+            </div>
+          )}
           {posts.length === 0 ? (
             <div className="text-center py-16 text-muted-foreground">
               Aucun article pour l&apos;instant.

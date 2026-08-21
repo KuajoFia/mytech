@@ -28,10 +28,17 @@ const CATEGORIES = [
 export default async function RealisationsPage({ searchParams }: { searchParams: Promise<{ cat?: string }> }) {
   const { cat } = await searchParams;
   const where = cat && cat !== "all" ? { category: cat } : {};
-  const realisations = await db.realization.findMany({
-    where,
-    orderBy: { createdAt: "desc" },
-  });
+  let realisations: any[] = [];
+  let dbError = false;
+  try {
+    realisations = await db.realization.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (e) {
+    console.error("RealisationsPage DB error:", e);
+    dbError = true;
+  }
 
   return (
     <>
@@ -73,6 +80,11 @@ export default async function RealisationsPage({ searchParams }: { searchParams:
           </div>
 
           {/* Grid */}
+          {dbError && (
+            <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+              <strong>Base de données en cours d&apos;initialisation.</strong> Les réalisations seront affichées prochainement.
+            </div>
+          )}
           {realisations.length === 0 ? (
             <div className="text-center py-16 text-muted-foreground">
               Aucune réalisation dans cette catégorie pour l&apos;instant.

@@ -47,15 +47,23 @@ const POINTS_FORTS = [
 ];
 
 export default async function HomePage() {
-  const [services, featuredProducts, testimonials] = await Promise.all([
-    db.service.findMany({ orderBy: { order: "asc" }, take: 5 }),
-    db.product.findMany({
-      where: { featured: true, status: "ACTIVE" },
-      take: 4,
-      include: { brand: true, category: true },
-    }),
-    db.testimonial.findMany({ where: { published: true }, take: 3 }),
-  ]);
+  let services: any[] = [];
+  let featuredProducts: any[] = [];
+  let testimonials: any[] = [];
+
+  try {
+    [services, featuredProducts, testimonials] = await Promise.all([
+      db.service.findMany({ orderBy: { order: "asc" }, take: 5 }),
+      db.product.findMany({
+        where: { featured: true, status: "ACTIVE" },
+        take: 4,
+        include: { brand: true, category: true },
+      }),
+      db.testimonial.findMany({ where: { published: true }, take: 3 }),
+    ]);
+  } catch (e) {
+    console.error("HomePage DB error:", e);
+  }
 
   return (
     <>

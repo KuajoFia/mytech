@@ -58,15 +58,25 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
     sort === "name" ? { name: "asc" } :
     { createdAt: "desc" };
 
-  const [products, categories, brands] = await Promise.all([
-    db.product.findMany({
-      where,
-      orderBy,
-      include: { brand: true, category: true },
-    }),
-    db.category.findMany({ orderBy: { name: "asc" } }),
-    db.brand.findMany({ orderBy: { name: "asc" } }),
-  ]);
+  let products: any[] = [];
+  let categories: any[] = [];
+  let brands: any[] = [];
+  let dbError = false;
+
+  try {
+    [products, categories, brands] = await Promise.all([
+      db.product.findMany({
+        where,
+        orderBy,
+        include: { brand: true, category: true },
+      }),
+      db.category.findMany({ orderBy: { name: "asc" } }),
+      db.brand.findMany({ orderBy: { name: "asc" } }),
+    ]);
+  } catch (e) {
+    console.error("ShopPage DB error:", e);
+    dbError = true;
+  }
 
   const currentCat = categories.find((c) => c.slug === cat);
 
@@ -98,6 +108,12 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
 
           {/* Product grid */}
           <div>
+            {dbError && (
+              <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                <strong>Base de données en cours d&apos;initialisation.</strong> Le catalogue produits sera disponible prochainement.
+                En attendant, <Link href="/contact" className="underline">contactez-nous</Link> pour toute demande.
+              </div>
+            )}
             {products.length === 0 ? (
               <div className="text-center py-20 border border-dashed rounded-lg">
                 <Search className="h-12 w-12 mx-auto text-muted-foreground/40 mb-3" />
