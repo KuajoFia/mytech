@@ -1,12 +1,12 @@
 // AGBE-TECH — Prisma schema
-// SQLite for development; switch to PostgreSQL in production.
+// PostgreSQL for production (Supabase/Neon/managed).
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
