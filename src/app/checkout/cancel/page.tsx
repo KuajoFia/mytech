@@ -2,6 +2,7 @@ import Link from "next/link";
 import { XCircle, RefreshCw, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { CheckoutStepper } from "@/components/shop/checkout-stepper";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,9 @@ export default function CheckoutCancelPage() {
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
       <div className="max-w-xl w-full">
+        <div className="mb-8">
+          <CheckoutStepper current={3} />
+        </div>
         <Card className="border-0 shadow-card-hover">
           <CardContent className="p-8 md:p-10 text-center">
             <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-red-100 mb-6 animate-fade-in-scale">

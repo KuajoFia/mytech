@@ -4,9 +4,12 @@
  *
  * Creates all tables in PostgreSQL using raw SQL.
  * Each statement is executed separately (Prisma doesn't allow multi-statement prepared queries).
+ *
+ * With ?seed=1, also seeds production data (10 products, 4 articles, 6 realisations, 4 testimonials).
  */
 import { NextResponse, NextRequest } from "next/server";
 import { db } from "@/lib/db";
+import { seedProduction } from "@/lib/seed-production";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300; // 5 min
@@ -553,10 +556,23 @@ export async function GET(req: NextRequest) {
     }
   }
 
+  const wantSeed = req.nextUrl.searchParams.get("seed") === "1";
+  let seedResult: any = null;
+
+  if (wantSeed) {
+    try {
+      await seedProduction(db);
+      seedResult = { ok: true, message: "Seed terminé avec succès" };
+    } catch (e: any) {
+      seedResult = { ok: false, error: e.message };
+    }
+  }
+
   return NextResponse.json({
     ok: failed === 0,
     success,
     failed,
     results: results.slice(-30), // last 30 to keep response small
+    seed: seedResult,
   });
 }

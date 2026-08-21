@@ -11,7 +11,7 @@ const RegisterSchema = z.object({
     .max(20)
     .regex(/^[0-9+\-\s]+$/, "Téléphone invalide"),
   email: z.string().email().optional().or(z.literal("")),
-  password: z.string().min(6, "Mot de passe trop court (6 caractères min)").max(100),
+  password: z.string().min(8, "Mot de passe trop court (8 caractères min)").max(100),
   companyName: z.string().optional(),
   rccm: z.string().optional(),
   nif: z.string().optional(),

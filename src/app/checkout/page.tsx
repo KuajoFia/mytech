@@ -12,6 +12,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useCart } from "@/components/cart/cart-provider";
 import { formatFCFA } from "@/lib/utils";
+import { CheckoutStepper } from "@/components/shop/checkout-stepper";
 import { toast } from "sonner";
 
 const DEFAULT_LOME_FEE = 2000;
@@ -106,9 +107,12 @@ export default function CheckoutPage() {
 
   return (
     <div className="container mx-auto px-4 py-10">
+      <div className="mb-8">
+        <CheckoutStepper current={2} />
+      </div>
       <h1 className="font-display text-3xl font-bold mb-1">Finaliser ma commande</h1>
       <p className="text-sm text-muted-foreground mb-6">
-        Compte invité — un compte sera créé automatiquement avec votre numéro WhatsApp.
+        Commande invité (sans inscription) — vous pourrez suivre votre commande par SMS.
       </p>
 
       <form onSubmit={handleSubmit} className="grid gap-6 lg:grid-cols-[1fr_380px]">

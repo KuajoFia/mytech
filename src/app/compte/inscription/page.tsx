@@ -26,11 +26,16 @@ export default function RegisterPage() {
     nif: "",
   });
   const [loading, setLoading] = useState(false);
+  const [acceptCgv, setAcceptCgv] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (form.password.length < 6) {
-      toast.error("Mot de passe trop court", { description: "6 caractères minimum." });
+    if (form.password.length < 8) {
+      toast.error("Mot de passe trop court", { description: "8 caractères minimum." });
+      return;
+    }
+    if (!acceptCgv) {
+      toast.error("Conditions générales", { description: "Vous devez accepter les CGV pour créer un compte." });
       return;
     }
     setLoading(true);
@@ -74,7 +79,7 @@ export default function RegisterPage() {
               <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
             </div>
             <div>
-              <Label htmlFor="pw">Mot de passe (min. 6 caractères) *</Label>
+              <Label htmlFor="pw">Mot de passe (8 caractères min.) *</Label>
               <Input id="pw" type="password" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
             </div>
             <label className="flex items-center gap-2 cursor-pointer">
@@ -101,7 +106,21 @@ export default function RegisterPage() {
                 </div>
               </div>
             )}
-            <Button type="submit" className="w-full bg-brand hover:bg-brand-light" disabled={loading}>
+            <div className="flex items-start gap-2 p-3 bg-secondary rounded">
+              <Checkbox
+                id="cgv"
+                checked={acceptCgv}
+                onCheckedChange={(v) => setAcceptCgv(!!v)}
+              />
+              <label htmlFor="cgv" className="text-xs leading-relaxed text-muted-foreground cursor-pointer">
+                J&apos;accepte les{" "}
+                <Link href="/cgv" className="text-brand hover:underline font-medium">Conditions Générales de Vente</Link>{" "}
+                et la{" "}
+                <Link href="/confidentialite" className="text-brand hover:underline font-medium">Politique de confidentialité</Link>{" "}
+                d&apos;AGBE-TECH.
+              </label>
+            </div>
+            <Button type="submit" className="w-full bg-brand hover:bg-brand-light" disabled={loading || !acceptCgv}>
               {loading ? "Création…" : "Créer mon compte"}
             </Button>
           </form>

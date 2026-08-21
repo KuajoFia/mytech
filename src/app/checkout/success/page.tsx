@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { db } from "@/lib/db";
 import type { Metadata } from "next";
+import { CheckoutStepper } from "@/components/shop/checkout-stepper";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,9 @@ export default async function CheckoutSuccessPage({ searchParams }: { searchPara
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
       <div className="max-w-2xl w-full">
+        <div className="mb-8">
+          <CheckoutStepper current={paid || order ? 4 : 3} />
+        </div>
         {paid || order ? (
           <Card className="border-0 shadow-card-hover">
             <CardContent className="p-8 md:p-10 text-center">

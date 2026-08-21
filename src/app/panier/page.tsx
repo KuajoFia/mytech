@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useCart } from "@/components/cart/cart-provider";
 import { formatFCFA } from "@/lib/utils";
+import { CheckoutStepper } from "@/components/shop/checkout-stepper";
 import { toast } from "sonner";
 
 export default function CartPage() {
@@ -80,6 +81,9 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto px-4 py-10">
+      <div className="mb-8">
+        <CheckoutStepper current={1} />
+      </div>
       <h1 className="font-display text-3xl font-bold mb-1">Mon panier</h1>
       <p className="text-sm text-muted-foreground mb-6">{count} article{count > 1 ? "s" : ""}</p>
 

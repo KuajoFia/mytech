@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, ArrowLeft, Search, ShoppingCart } from "lucide-react";
 import { ProductDetailClient } from "@/components/shop/product-detail-client";
 import { ProductCard } from "@/components/shop/product-card";
+import { ProductJsonLd, BreadcrumbJsonLd } from "@/components/site/json-ld";
+import { safeParse } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -81,6 +83,26 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
   return (
     <>
+      {/* JSON-LD for SEO */}
+      <ProductJsonLd
+        name={product.name}
+        description={product.shortDesc}
+        image={safeParse<string[]>(product.images, [])[0] || "/placeholder.png"}
+        sku={product.sku}
+        brand={product.brand?.name}
+        price={product.regularPrice}
+        promoPrice={product.promoPrice}
+        availability={product.stock > 0 ? "InStock" : "OutOfStock"}
+        url={`/boutique/${product.slug}`}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", url: "/" },
+          { name: "Boutique", url: "/boutique" },
+          ...(product.category ? [{ name: product.category.name, url: `/boutique?cat=${product.category.slug}` }] : []),
+          { name: product.name, url: `/boutique/${product.slug}` },
+        ]}
+      />
       {/* Breadcrumb */}
       <nav className="container mx-auto px-4 pt-4 text-xs text-muted-foreground flex items-center gap-1 flex-wrap">
         <Link href="/" className="hover:text-brand">Accueil</Link>

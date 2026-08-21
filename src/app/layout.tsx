@@ -8,6 +8,8 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { WhatsAppFab } from "@/components/layout/whatsapp-fab";
 import { CartProvider } from "@/components/cart/cart-provider";
 import { LocalBusinessJsonLd } from "@/components/site/local-business-jsonld";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -94,6 +96,8 @@ export default function RootLayout({
         <Toaster />
         <SonnerToaster position="top-right" />
         <LocalBusinessJsonLd />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

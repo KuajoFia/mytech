@@ -72,6 +72,11 @@ export default function LoginPage() {
               {loading ? "Connexion…" : "Se connecter"}
             </Button>
           </form>
+          <div className="text-right">
+            <Link href="/compte/mot-de-passe-oublie" className="text-xs text-brand hover:underline">
+              Mot de passe oublié ?
+            </Link>
+          </div>
           <p className="text-xs text-center text-muted-foreground mt-4">
             Pas encore de compte ?{" "}
             <Link href="/compte/inscription" className="text-brand hover:underline">Créer un compte</Link>

@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Calendar, Phone, ArrowRight, Search } from "lucide-react";
 import { formatDate, safeParse } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/site/json-ld";
 
 export const dynamic = "force-dynamic";
 
@@ -64,6 +65,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <>
+      {/* JSON-LD for SEO */}
+      <ArticleJsonLd
+        title={post.title}
+        description={post.excerpt}
+        image={post.cover || undefined}
+        url={`/blog/${post.slug}`}
+        datePublished={post.createdAt}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", url: "/" },
+          { name: "Blog", url: "/blog" },
+          { name: post.title, url: `/blog/${post.slug}` },
+        ]}
+      />
       <article className="py-12">
         <div className="container mx-auto px-4 max-w-3xl">
           <Link href="/blog" className="inline-flex items-center text-sm text-muted-foreground hover:text-brand mb-6 transition">
