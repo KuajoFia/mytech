@@ -20,11 +20,12 @@ const NAV: NavItem[] = [
     href: "/services",
     label: "Services",
     children: [
-      { href: "/services/cablage-reseau", label: "Réseau informatique", desc: "Câblage Cat6, switchs, Wi-Fi" },
+      { href: "/services/reseau-informatique", label: "Réseau informatique", desc: "Câblage Cat6, switchs, Wi-Fi" },
       { href: "/services/videosurveillance", label: "Vidéosurveillance", desc: "Caméras IP, PTZ, Hikvision, Dahua" },
       { href: "/services/solaire-energie", label: "Solaire & énergie", desc: "Panneaux, batteries, onduleurs" },
       { href: "/services/electricite-batiment", label: "Électricité bâtiment", desc: "Mise aux normes, tableaux" },
       { href: "/services/liaison-longue-distance", label: "Liaison longue distance", desc: "Faisceaux hertziens" },
+      { href: "/services/maintenance-support", label: "Maintenance & support", desc: "Contrats annuels, astreinte 7j/7" },
     ],
   },
   { href: "/realisations", label: "Réalisations" },

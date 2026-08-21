@@ -76,11 +76,9 @@ export default function LoginPage() {
             Pas encore de compte ?{" "}
             <Link href="/compte/inscription" className="text-brand hover:underline">Créer un compte</Link>
           </p>
-          <div className="mt-4 p-3 bg-secondary rounded text-xs text-muted-foreground">
-            <strong className="text-foreground">Compte démo admin :</strong><br />
-            Identifiant : <code>admin@agbe-tech.com</code><br />
-            Mot de passe : <code>agbe-admin-2026</code>
-          </div>
+          <p className="text-xs text-center text-muted-foreground mt-2">
+            <Link href="/admin/connexion" className="hover:text-brand">Espace équipe AGBE-TECH →</Link>
+          </p>
         </CardContent>
       </Card>
     </div>

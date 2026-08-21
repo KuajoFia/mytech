@@ -104,9 +104,10 @@ export async function POST(req: NextRequest) {
 
     // Redirect to order page on success
     if (contentType.includes("application/x-www-form-urlencoded")) {
-      return NextResponse.redirect(
-        new URL(`/compte/commandes/${orderId}?paid=${status === "SUCCESS" ? "1" : "0"}`, req.url)
-      );
+      const target = status === "SUCCESS"
+        ? new URL(`/checkout/success?orderId=${orderId}&paid=1`, req.url)
+        : new URL(`/checkout/cancel`, req.url);
+      return NextResponse.redirect(target);
     }
     return NextResponse.json({ ok: true, status });
   } catch (e: any) {

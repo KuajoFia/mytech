@@ -8,11 +8,12 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 const SERVICES = [
-  { href: "/services/cablage-reseau", label: "Réseau informatique" },
+  { href: "/services/reseau-informatique", label: "Réseau informatique" },
   { href: "/services/videosurveillance", label: "Vidéosurveillance" },
   { href: "/services/solaire-energie", label: "Solaire & énergie" },
   { href: "/services/electricite-batiment", label: "Électricité bâtiment" },
   { href: "/services/liaison-longue-distance", label: "Liaison longue distance" },
+  { href: "/services/maintenance-support", label: "Maintenance & support" },
 ];
 
 const BOUTIQUE = [
@@ -26,6 +27,7 @@ const ENTREPRISE = [
   { href: "/a-propos", label: "À propos" },
   { href: "/realisations", label: "Réalisations" },
   { href: "/blog", label: "Blog & conseils" },
+  { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact & devis" },
   { href: "/compte", label: "Espace client" },
 ];
