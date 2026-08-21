@@ -82,13 +82,20 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
 
   return (
     <>
-      <section className="bg-brand-gradient text-white py-12">
-        <div className="container mx-auto px-4">
-          <Badge className="mb-3 bg-accent-yellow text-black hover:bg-accent-yellow">Boutique en ligne</Badge>
-          <h1 className="font-display text-3xl md:text-4xl font-extrabold">
+      <section className="relative overflow-hidden bg-mesh text-white py-16 md:py-20">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-accent-yellow/20 blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 h-80 w-80 rounded-full bg-brand-light/30 blur-3xl" />
+        </div>
+        <div className="container relative mx-auto px-4">
+          <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm">
+            <span className="inline-flex h-2 w-2 rounded-full bg-accent-yellow" />
+            <span className="text-xs font-medium text-white/90 tracking-wide">Boutique en ligne</span>
+          </div>
+          <h1 className="font-display text-3xl md:text-5xl font-extrabold tracking-tight">
             {currentCat ? currentCat.name : "Catalogue complet"}
           </h1>
-          <p className="mt-2 text-white/85">
+          <p className="mt-3 text-white/80 text-base max-w-2xl">
             {products.length} produit{products.length > 1 ? "s" : ""} disponible{products.length > 1 ? "s" : ""} ·
             Paiement T-Money & Flooz · Livraison Lomé & tout le Togo
           </p>
@@ -98,7 +105,7 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
       <section className="py-10">
         <div className="container mx-auto px-4 grid gap-8 lg:grid-cols-[260px_1fr]">
           {/* Sidebar filters */}
-          <aside className="lg:sticky lg:top-24 lg:self-start">
+          <aside className="lg:sticky lg:top-32 lg:self-start">
             <ShopFilters
               categories={categories.map((c) => ({ slug: c.slug, name: c.name }))}
               brands={brands.map((b) => ({ slug: b.slug, name: b.name }))}
@@ -115,10 +122,12 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
               </div>
             )}
             {products.length === 0 ? (
-              <div className="text-center py-20 border border-dashed rounded-lg">
-                <Search className="h-12 w-12 mx-auto text-muted-foreground/40 mb-3" />
-                <h3 className="font-display font-semibold">Aucun produit ne correspond à vos critères</h3>
-                <p className="text-sm text-muted-foreground mt-1">
+              <div className="text-center py-24 border border-dashed rounded-2xl">
+                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-secondary mb-4">
+                  <Search className="h-8 w-8 text-muted-foreground/60" />
+                </div>
+                <h3 className="font-display font-semibold text-lg">Aucun produit ne correspond à vos critères</h3>
+                <p className="text-sm text-muted-foreground mt-1 max-w-sm mx-auto">
                   Essayez d&apos;élargir votre recherche ou consultez tout le catalogue.
                 </p>
                 <Link href="/boutique" className="mt-4 inline-block text-sm text-brand font-medium hover:underline">

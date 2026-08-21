@@ -68,74 +68,100 @@ export default async function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-brand-gradient text-white">
-        <div className="absolute inset-0 bg-hero-overlay" />
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute -top-20 -right-20 h-72 w-72 rounded-full bg-accent-yellow blur-3xl" />
-          <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-white blur-3xl" />
+      <section className="relative overflow-hidden bg-mesh text-white min-h-[88vh] flex items-center -mt-16 pt-16">
+        {/* Decorative gradient blobs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-20 -right-20 h-96 w-96 rounded-full bg-accent-yellow/20 blur-3xl animate-float" />
+          <div className="absolute bottom-0 left-1/4 h-96 w-96 rounded-full bg-brand-light/40 blur-3xl" />
+          <div className="absolute top-1/2 -left-20 h-64 w-64 rounded-full bg-white/5 blur-2xl" />
         </div>
+        {/* Grid overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{
+          backgroundImage: "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }} />
+
         <div className="container relative mx-auto px-4 py-16 md:py-24 lg:py-28">
           <div className="max-w-3xl">
-            <Badge className="mb-4 bg-accent-yellow text-black hover:bg-accent-yellow">
-              Lomé · Togo — Depuis 2014
-            </Badge>
-            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+            <div className="inline-flex items-center gap-2 mb-5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm animate-fade-in">
+              <span className="inline-flex h-2 w-2 rounded-full bg-accent-yellow animate-pulse" />
+              <span className="text-xs font-medium text-white/90 tracking-wide">Lomé · Togo — Depuis 2014</span>
+            </div>
+            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight animate-fade-in-up">
               Votre partenaire de confiance en{" "}
               <span className="text-accent-yellow">solutions technologiques</span> et{" "}
               <span className="text-accent-yellow">énergétiques</span>
             </h1>
-            <p className="mt-5 text-lg text-white/90 max-w-2xl">
+            <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed animate-fade-in-up" style={{ animationDelay: "100ms" }}>
               Réseau informatique, vidéosurveillance, électricité bâtiment, panneaux solaires et
               liaison longue distance. AGBE-TECH conçoit, installe et maintient vos infrastructures
               critiques avec professionnalisme.
             </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="bg-accent-yellow text-black hover:bg-accent-yellow/90">
+            <div className="mt-8 flex flex-wrap gap-3 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
+              <Button asChild size="lg" className="bg-accent-yellow text-black hover:bg-accent-yellow/90 hover:-translate-y-0.5 transition-all shadow-lg">
                 <Link href="/contact?devis=1">
                   Demander un devis gratuit <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10">
+              <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/5 text-white hover:bg-white/10 backdrop-blur-sm">
                 <Link href="/boutique">
                   Découvrir la boutique
                 </Link>
               </Button>
-              <a
-                href="tel:+22898897914"
-                className="inline-flex items-center gap-2 text-white text-sm font-medium ml-2 hover:text-accent-yellow transition"
-              >
-                <Phone className="h-4 w-4" /> +228 98 89 79 14
+            </div>
+            <div className="mt-3 flex items-center gap-2 text-white/70 text-sm">
+              <Phone className="h-4 w-4" />
+              <a href="tel:+22898897914" className="hover:text-accent-yellow transition font-medium">
+                +228 98 89 79 14
+              </a>
+              <span className="opacity-50 mx-1">·</span>
+              <a href="tel:+22893907706" className="hover:text-accent-yellow transition font-medium">
+                +228 93 90 77 06
               </a>
             </div>
-            <div className="mt-10 grid grid-cols-3 gap-4 max-w-md">
+
+            <div className="mt-12 grid grid-cols-3 gap-6 max-w-lg animate-fade-in-up" style={{ animationDelay: "300ms" }}>
               <div>
-                <div className="text-3xl font-extrabold text-accent-yellow">10+</div>
-                <div className="text-xs text-white/80">ans d'expérience</div>
+                <div className="text-4xl md:text-5xl font-extrabold text-accent-yellow leading-none">10+</div>
+                <div className="text-xs md:text-sm text-white/70 mt-2">ans d'expérience</div>
               </div>
-              <div>
-                <div className="text-3xl font-extrabold text-accent-yellow">500+</div>
-                <div className="text-xs text-white/80">chantiers livrés</div>
+              <div className="border-l border-white/20 pl-6">
+                <div className="text-4xl md:text-5xl font-extrabold text-accent-yellow leading-none">500+</div>
+                <div className="text-xs md:text-sm text-white/70 mt-2">chantiers livrés</div>
               </div>
-              <div>
-                <div className="text-3xl font-extrabold text-accent-yellow">24/7</div>
-                <div className="text-xs text-white/80">astreinte</div>
+              <div className="border-l border-white/20 pl-6">
+                <div className="text-4xl md:text-5xl font-extrabold text-accent-yellow leading-none">24/7</div>
+                <div className="text-xs md:text-sm text-white/70 mt-2">astreinte</div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block">
+          <div className="flex flex-col items-center gap-2 text-white/40">
+            <span className="text-[10px] uppercase tracking-widest">Défiler</span>
+            <div className="h-10 w-6 rounded-full border-2 border-white/30 flex justify-center pt-2">
+              <div className="h-2 w-1 rounded-full bg-white/60 animate-bounce" />
             </div>
           </div>
         </div>
       </section>
 
       {/* POINTS FORTS */}
-      <section className="py-12 bg-background border-b">
+      <section className="py-14 bg-background border-b">
         <div className="container mx-auto px-4 grid gap-6 md:grid-cols-3">
-          {POINTS_FORTS.map((p) => (
-            <div key={p.title} className="flex items-start gap-4">
-              <div className="rounded-lg bg-brand/10 p-3">
-                <p.icon className="h-6 w-6 text-brand" />
+          {POINTS_FORTS.map((p, i) => (
+            <div
+              key={p.title}
+              className="group flex items-start gap-4 p-5 -mx-5 rounded-xl hover:bg-secondary/50 transition-colors"
+            >
+              <div className="rounded-xl bg-brand/10 p-3 group-hover:bg-brand group-hover:text-white transition-colors shrink-0">
+                <p.icon className="h-6 w-6 text-brand group-hover:text-white transition-colors" />
               </div>
               <div>
                 <h3 className="font-display font-bold text-base mb-1">{p.title}</h3>
-                <p className="text-sm text-muted-foreground">{p.desc}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
               </div>
             </div>
           ))}

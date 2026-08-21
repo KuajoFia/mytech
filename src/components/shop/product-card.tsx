@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, FileText, Star } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { ShoppingCart, FileText, ArrowRight } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/components/cart/cart-provider";
 import { toast } from "sonner";
-import { formatFCFA, safeParse } from "@/lib/utils";
+import { formatFCFA, safeParse, cn } from "@/lib/utils";
 
 type ProductCardProps = {
   product: {
@@ -34,13 +34,19 @@ export function ProductCard({ product }: ProductCardProps) {
   const isOnRequest = product.pricingMode === "ON_REQUEST";
   const isPromo = product.promoPrice && product.promoPrice < product.regularPrice;
   const finalPrice = product.promoPrice ?? product.regularPrice;
-  const stockLabel = product.stock > 5
-    ? { text: "En stock", cls: "bg-emerald-100 text-emerald-800 border-emerald-200" }
-    : product.stock > 0
-      ? { text: `Plus que ${product.stock}`, cls: "bg-amber-100 text-amber-800 border-amber-200" }
-      : { text: "Rupture", cls: "bg-red-100 text-red-800 border-red-200" };
+  const discountPercent = isPromo
+    ? Math.round(((product.regularPrice - (product.promoPrice as number)) / product.regularPrice) * 100)
+    : 0;
 
-  const handleAdd = () => {
+  const stockLabel = product.stock > 5
+    ? { text: "En stock", cls: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500" }
+    : product.stock > 0
+      ? { text: `Plus que ${product.stock}`, cls: "bg-amber-50 text-amber-700 border-amber-200", dot: "bg-amber-500" }
+      : { text: "Rupture", cls: "bg-red-50 text-red-700 border-red-200", dot: "bg-red-500" };
+
+  const handleAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (product.stock === 0) return;
     add({
       productId: product.id,
       slug: product.slug,
@@ -58,48 +64,80 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Card className="group overflow-hidden hover:shadow-brand transition-all duration-300 flex flex-col">
+    <Card
+      className={cn(
+        "group relative overflow-hidden flex flex-col p-0",
+        "border-border/60",
+        "transition-all duration-300 ease-out",
+        "hover:-translate-y-1 hover:shadow-card-hover hover:border-brand/30"
+      )}
+    >
       <Link href={`/boutique/${product.slug}`} className="block relative aspect-square overflow-hidden bg-secondary">
         <Image
           src={cover}
           alt={product.name}
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
-        {isPromo && (
-          <Badge className="absolute top-2 left-2 bg-red-500 text-white hover:bg-red-500">
-            Promo
-          </Badge>
-        )}
-        {isOnRequest && (
-          <Badge className="absolute top-2 left-2 bg-brand text-white hover:bg-brand">
-            Sur devis
-          </Badge>
+        {/* Gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-2 items-start">
+          {isPromo && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-red-500 px-2.5 py-1 text-[11px] font-bold text-white shadow-sm">
+              -{discountPercent}%
+            </span>
+          )}
+          {isOnRequest && (
+            <span className="inline-flex items-center rounded-full bg-brand px-2.5 py-1 text-[11px] font-bold text-white shadow-sm">
+              Sur devis
+            </span>
+          )}
+        </div>
+
+        {/* Quick add button (appears on hover) */}
+        {!isOnRequest && product.stock > 0 && (
+          <button
+            onClick={handleAdd}
+            className="absolute bottom-3 right-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-brand shadow-lg opacity-0 translate-y-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-y-0 hover:bg-brand hover:text-white"
+            aria-label="Ajouter au panier"
+          >
+            <ShoppingCart className="h-4 w-4" />
+          </button>
         )}
       </Link>
-      <CardContent className="p-4 flex flex-col flex-1">
+
+      <div className="p-4 flex flex-col flex-1">
         {product.brand && (
-          <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.12em] mb-1.5">
             {product.brand}
           </div>
         )}
         <Link href={`/boutique/${product.slug}`} className="block">
-          <h3 className="font-semibold text-sm leading-snug line-clamp-2 group-hover:text-brand transition">
+          <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-foreground group-hover:text-brand transition-colors">
             {product.name}
           </h3>
         </Link>
-        <p className="text-xs text-muted-foreground mt-1 line-clamp-2 flex-1">{product.shortDesc}</p>
+        <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2 flex-1 leading-relaxed">
+          {product.shortDesc}
+        </p>
 
-        <Badge variant="outline" className={`mt-3 w-fit text-[10px] ${stockLabel.cls}`}>
-          {stockLabel.text}
-        </Badge>
+        {/* Stock badge with status dot */}
+        <div className="mt-3 flex items-center gap-2">
+          <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-medium", stockLabel.cls)}>
+            <span className={cn("inline-block h-1.5 w-1.5 rounded-full", stockLabel.dot)} />
+            {stockLabel.text}
+          </span>
+        </div>
 
-        <div className="mt-3 flex items-end justify-between gap-2">
+        {/* Price */}
+        <div className="mt-3 flex items-end justify-between gap-2 pt-3 border-t border-border/60">
           {isOnRequest ? (
             <div>
-              <div className="text-xs text-muted-foreground">Prix sur demande</div>
-              <div className="text-sm font-semibold text-brand">Demander un devis</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Prix sur demande</div>
+              <div className="text-sm font-semibold text-brand mt-0.5">Demander un devis</div>
             </div>
           ) : (
             <div>
@@ -115,28 +153,34 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        <div className="mt-3 flex gap-2">
+        {/* CTA */}
+        <div className="mt-3">
           {isOnRequest ? (
-            <Button asChild size="sm" className="flex-1 bg-brand hover:bg-brand-light">
+            <Button asChild size="sm" className="w-full bg-brand hover:bg-brand-light group/btn">
               <Link href={`/contact?devis=1&produit=${product.slug}`}>
-                <FileText className="h-3.5 w-3.5 mr-1" /> Devis
+                <FileText className="h-3.5 w-3.5 mr-1.5" /> Demander un devis
+                <ArrowRight className="h-3.5 w-3.5 ml-1.5 transition-transform group-hover/btn:translate-x-0.5" />
               </Link>
             </Button>
           ) : (
-            <Button
-              size="sm"
-              onClick={handleAdd}
-              disabled={product.stock === 0}
-              className="flex-1 bg-brand hover:bg-brand-light"
-            >
-              <ShoppingCart className="h-3.5 w-3.5 mr-1" /> Ajouter
-            </Button>
+            <div className="grid grid-cols-[1fr_auto] gap-2">
+              <Button
+                size="sm"
+                onClick={handleAdd}
+                disabled={product.stock === 0}
+                className="bg-brand hover:bg-brand-light"
+              >
+                <ShoppingCart className="h-3.5 w-3.5 mr-1.5" /> Ajouter
+              </Button>
+              <Button asChild size="sm" variant="outline">
+                <Link href={`/boutique/${product.slug}`}>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </Button>
+            </div>
           )}
-          <Button asChild size="sm" variant="outline">
-            <Link href={`/boutique/${product.slug}`}>Détails</Link>
-          </Button>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }

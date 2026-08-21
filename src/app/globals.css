@@ -3,11 +3,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* AGBE-TECH Charte graphique
-   Bleu institutionnel: #0A3D91 / #1449A5
-   Blanc + gris foncé
-   Typographies: Montserrat/Poppins (titres) + Inter/Open Sans (corps)
-*/
+/* ============================================================
+   AGBE-TECH — Design System
+   Palette : Navy #0A3D91 + Yellow #FFB800
+   Typo : Montserrat (display) + Inter (body)
+   ============================================================ */
 
 @theme inline {
   --color-background: var(--background);
@@ -47,32 +47,51 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  /* Custom easing curves for premium animations */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Custom shadows for layered depth */
+  --shadow-xs: 0 1px 2px 0 rgba(10, 61, 145, 0.04);
+  --shadow-sm: 0 2px 4px -1px rgba(10, 61, 145, 0.06), 0 1px 2px -1px rgba(10, 61, 145, 0.04);
+  --shadow-md: 0 4px 8px -2px rgba(10, 61, 145, 0.08), 0 2px 4px -2px rgba(10, 61, 145, 0.06);
+  --shadow-lg: 0 12px 24px -6px rgba(10, 61, 145, 0.12), 0 4px 8px -4px rgba(10, 61, 145, 0.08);
+  --shadow-xl: 0 24px 48px -12px rgba(10, 61, 145, 0.18), 0 8px 16px -8px rgba(10, 61, 145, 0.10);
+  --shadow-2xl: 0 32px 64px -16px rgba(10, 61, 145, 0.22);
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 0.625rem;
   --background: #FFFFFF;
-  --foreground: #1A1F2C;
+  --foreground: #0F172A;
   --card: #FFFFFF;
-  --card-foreground: #1A1F2C;
+  --card-foreground: #0F172A;
   --popover: #FFFFFF;
-  --popover-foreground: #1A1F2C;
+  --popover-foreground: #0F172A;
 
-  /* AGBE-TECH brand colors */
+  /* AGBE-TECH brand colors — refined */
   --primary: #0A3D91;
   --primary-foreground: #FFFFFF;
   --primary-light: #1449A5;
   --primary-dark: #072D6B;
+  --primary-50: #EEF4FC;
+  --primary-100: #D6E4F7;
+  --primary-200: #ADC8EE;
 
   --secondary: #F5F7FA;
-  --secondary-foreground: #1A1F2C;
+  --secondary-foreground: #0F172A;
   --muted: #F1F4F8;
-  --muted-foreground: #5C6678;
-  --accent: #FFB800; /* jaune accent Togo */
-  --accent-foreground: #1A1F2C;
+  --muted-foreground: #64748B;
+  --accent: #FFB800;
+  --accent-foreground: #0F172A;
+  --accent-dark: #E0A300;
 
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
+  --success: #059669;
+  --warning: #D97706;
 
   --border: #E2E8F0;
   --input: #E2E8F0;
@@ -85,7 +104,7 @@
   --chart-5: #DC2626;
 
   --sidebar: #FFFFFF;
-  --sidebar-foreground: #1A1F2C;
+  --sidebar-foreground: #0F172A;
   --sidebar-primary: #0A3D91;
   --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: #F5F7FA;
@@ -130,28 +149,68 @@
   }
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "cv11", "ss01";
+    font-feature-settings: "cv11", "ss01", "cv02", "cv03";
     font-variation-settings: "opsz" 32;
   }
   h1, h2, h3, h4, h5 {
     @apply font-display font-bold tracking-tight;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Selection style */
+  ::selection {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* Focus ring for accessibility */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 
-/* Utility classes for AGBE-TECH */
+/* ============================================================
+   Utility classes for AGBE-TECH
+   ============================================================ */
+
 .bg-brand-gradient {
   background: linear-gradient(135deg, #0A3D91 0%, #1449A5 60%, #072D6B 100%);
+}
+
+.bg-brand-gradient-soft {
+  background: linear-gradient(135deg, #EEF4FC 0%, #F5F7FA 100%);
 }
 
 .bg-hero-overlay {
   background: linear-gradient(180deg, rgba(10,61,145,0.92) 0%, rgba(20,73,165,0.78) 50%, rgba(7,45,107,0.92) 100%);
 }
 
+.bg-mesh {
+  background-color: #0A3D91;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(255, 184, 0, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(20, 73, 165, 0.4) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(255, 184, 0, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(7, 45, 107, 0.5) 0px, transparent 50%);
+}
+
 .text-brand {
   color: #0A3D91;
+}
+
+.text-brand-light {
+  color: #1449A5;
 }
 
 .bg-brand {
@@ -166,21 +225,78 @@
   background-color: #072D6B;
 }
 
+.bg-brand-50 {
+  background-color: #EEF4FC;
+}
+
+.bg-brand-100 {
+  background-color: #D6E4F7;
+}
+
 .bg-accent-yellow {
   background-color: #FFB800;
+}
+
+.text-accent-yellow {
+  color: #FFB800;
 }
 
 .border-brand {
   border-color: #0A3D91;
 }
 
-/* Smooth shadow */
+/* Premium shadows */
 .shadow-brand {
-  box-shadow: 0 10px 30px -10px rgba(10, 61, 145, 0.25);
+  box-shadow: 0 10px 30px -10px rgba(10, 61, 145, 0.18);
 }
 
 .shadow-brand-lg {
-  box-shadow: 0 20px 50px -15px rgba(10, 61, 145, 0.35);
+  box-shadow: 0 20px 50px -15px rgba(10, 61, 145, 0.28);
+}
+
+.shadow-card {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-card-hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Glassmorphism for sticky header */
+.glass-header {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+.glass-dark {
+  background: rgba(10, 61, 145, 0.85);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+/* Premium card with hover lift */
+.card-hover {
+  transition: transform 250ms var(--ease-out-quart), box-shadow 250ms var(--ease-out-quart);
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Gradient text */
+.text-gradient-brand {
+  background: linear-gradient(135deg, #0A3D91 0%, #1449A5 50%, #072D6B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(135deg, #FFB800 0%, #E0A300 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Hide scrollbar for filter chips row */
@@ -192,17 +308,113 @@
   scrollbar-width: none;
 }
 
-/* Smooth fade-in for client components */
+/* ============================================================
+   Animations — subtle & premium
+   ============================================================ */
+
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-scale {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes counter-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
 .animate-fade-in {
-  animation: fade-in 0.4s ease-out;
+  animation: fade-in 0.4s var(--ease-out-quart);
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s var(--ease-out-quart);
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.4s var(--ease-out-quart);
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.5s var(--ease-out-quart);
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Reveal-on-scroll utility (paired with ScrollReveal component) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease-out-quart), transform 0.7s var(--ease-out-quart);
+  will-change: opacity, transform;
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children by setting transition-delay */
+.reveal[data-delay="50"]  { transition-delay: 50ms; }
+.reveal[data-delay="100"] { transition-delay: 100ms; }
+.reveal[data-delay="150"] { transition-delay: 150ms; }
+.reveal[data-delay="200"] { transition-delay: 200ms; }
+.reveal[data-delay="300"] { transition-delay: 300ms; }
+.reveal[data-delay="400"] { transition-delay: 400ms; }
+
+/* Skeleton loading shimmer */
+.skeleton {
+  background: linear-gradient(90deg, #F5F7FA 0%, #E2E8F0 50%, #F5F7FA 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }
 
 /* Print styles for PDF */
 @media print {
   .no-print { display: none !important; }
   body { background: white; color: black; }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
