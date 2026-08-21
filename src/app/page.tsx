@@ -82,20 +82,21 @@ export default async function HomePage() {
         }} />
 
         <div className="container relative mx-auto px-4 py-16 md:py-20 lg:py-24">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-5xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm animate-fade-in">
               <span className="inline-flex h-2 w-2 rounded-full bg-accent-yellow animate-pulse" />
               <span className="text-xs font-medium text-white/90 tracking-wide">Lomé · Togo — Depuis 2014</span>
             </div>
-            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight animate-fade-in-up">
+            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight animate-fade-in-up w-full">
               Votre partenaire de confiance en{" "}
               <span className="text-accent-yellow">solutions technologiques</span> et{" "}
               <span className="text-accent-yellow">énergétiques</span>
             </h1>
-            <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: "100ms" }}>
+            <p className="mt-6 text-base md:text-lg lg:text-xl text-white/85 max-w-4xl mx-auto leading-relaxed text-justify animate-fade-in-up" style={{ animationDelay: "100ms" }}>
               Réseau informatique, vidéosurveillance, électricité bâtiment, panneaux solaires et
               liaison longue distance. AGBE-TECH conçoit, installe et maintient vos infrastructures
-              critiques avec professionnalisme.
+              critiques avec professionnalisme. Notre équipe de techniciens certifiés intervient
+              à Lomé et dans tout le Togo, avec un engagement de qualité et de transparence à chaque étape.
             </p>
             <div className="mt-8 flex flex-wrap gap-3 justify-center animate-fade-in-up" style={{ animationDelay: "200ms" }}>
               <Button asChild size="lg" className="bg-accent-yellow text-black hover:bg-accent-yellow/90 hover:-translate-y-0.5 transition-all shadow-lg">
