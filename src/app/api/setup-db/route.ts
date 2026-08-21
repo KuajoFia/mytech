@@ -489,12 +489,27 @@ const STATEMENTS: string[] = [
   // ── Convert TEXT columns to enum types ─────────
   // Required because Prisma's schema uses enums (UserRole, OrderStatus, etc.)
   // and tries to cast text values to the enum type.
+  // Need to drop default first, alter type, then re-add default.
+  `ALTER TABLE "User" ALTER COLUMN "role" DROP DEFAULT`,
   `ALTER TABLE "User" ALTER COLUMN "role" TYPE "UserRole" USING "role"::"UserRole"`,
+  `ALTER TABLE "User" ALTER COLUMN "role" SET DEFAULT 'CLIENT'`,
+
+  `ALTER TABLE "Product" ALTER COLUMN "status" DROP DEFAULT`,
   `ALTER TABLE "Product" ALTER COLUMN "status" TYPE "ProductStatus" USING "status"::"ProductStatus"`,
+  `ALTER TABLE "Product" ALTER COLUMN "status" SET DEFAULT 'ACTIVE'`,
+  `ALTER TABLE "Product" ALTER COLUMN "pricingMode" DROP DEFAULT`,
   `ALTER TABLE "Product" ALTER COLUMN "pricingMode" TYPE "PricingMode" USING "pricingMode"::"PricingMode"`,
+  `ALTER TABLE "Product" ALTER COLUMN "pricingMode" SET DEFAULT 'PRICE'`,
+
+  `ALTER TABLE "Order" ALTER COLUMN "status" DROP DEFAULT`,
   `ALTER TABLE "Order" ALTER COLUMN "status" TYPE "OrderStatus" USING "status"::"OrderStatus"`,
+  `ALTER TABLE "Order" ALTER COLUMN "status" SET DEFAULT 'QUOTE_REQUESTED'`,
   `ALTER TABLE "Order" ALTER COLUMN "deliveryMode" TYPE "DeliveryMode" USING "deliveryMode"::"DeliveryMode"`,
+
+  `ALTER TABLE "Quote" ALTER COLUMN "status" DROP DEFAULT`,
   `ALTER TABLE "Quote" ALTER COLUMN "status" TYPE "QuoteStatus" USING "status"::"QuoteStatus"`,
+  `ALTER TABLE "Quote" ALTER COLUMN "status" SET DEFAULT 'DRAFT'`,
+
   `ALTER TABLE "Document" ALTER COLUMN "type" TYPE "DocumentType" USING "type"::"DocumentType"`,
 ];
 
