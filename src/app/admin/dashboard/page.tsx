@@ -44,10 +44,11 @@ export default async function AdminDashboard() {
     paidCount = await db.order.count({ where: { status: "PAID" } });
 
     // Status distribution
-    statusGroups = await db.order.groupBy({
+    const groups = await db.order.groupBy({
       by: ["status"],
       _count: true,
     });
+    statusGroups = groups as any[];
   } catch (e) {
     console.error("AdminDashboard DB error:", e);
     dbError = true;
