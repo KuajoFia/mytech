@@ -76,9 +76,6 @@ export default function LoginPage() {
             Pas encore de compte ?{" "}
             <Link href="/compte/inscription" className="text-brand hover:underline">Créer un compte</Link>
           </p>
-          <p className="text-xs text-center text-muted-foreground mt-2">
-            <Link href="/admin/connexion" className="hover:text-brand">Espace équipe AGBE-TECH →</Link>
-          </p>
         </CardContent>
       </Card>
     </div>

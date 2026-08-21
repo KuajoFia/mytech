@@ -19,9 +19,9 @@ export const FALLBACK_SERVICES: FallbackService[] = [
   {
     slug: "videosurveillance",
     title: "Vidéosurveillance",
-    shortDesc: "Caméras IP, analogiques, PTZ, dôme, bullet — Hikvision, Dahua et plus.",
+    shortDesc: "Caméras IP, analogiques, PTZ, dôme, bullet — Hikvision, Dahua, TP-Link.",
     description:
-      "Notre équipe installe des systèmes de vidéosurveillance professionnels pour particuliers, entreprises et institutions au Togo. Nous maîtrisons les marques Hikvision, Dahua, TP-Link Tapo et proposons des solutions IP 4MP à 8MP, vision nocturne, détection IA AcuSense, audio bidirectionnel et accès mobile temps réel. Du câblage structuré au paramétrage fine des NVR/DVR, en passant par la configuration des notifications push sur smartphone, nous livrons des installations clé en main, garanties 2 ans.",
+      "Notre équipe installe des systèmes de vidéosurveillance professionnels pour particuliers, entreprises et institutions au Togo. Nous maîtrisons les marques Hikvision, Dahua et TP-Link Tapo, et proposons des solutions IP 4MP à 8MP, vision nocturne, détection IA AcuSense, audio bidirectionnel et accès mobile temps réel.\n\nDu câblage structuré au paramétrage fin des NVR/DVR, en passant par la configuration des notifications push sur smartphone, nous livrons des installations clé en main, garanties 5 ans (pièces et main d'œuvre).",
     icon: "cctv",
     benefits: [
       "Caméras IP 4MP / 8MP haute définition",
@@ -45,7 +45,7 @@ export const FALLBACK_SERVICES: FallbackService[] = [
         a: "Pour une villa standard à Lomé (4 angles + entrée), 4 à 6 caméras suffisent. Pour un immeuble, comptez 2 caméras par étage + entrée + parking.",
       },
       {
-        q: "Combien de temps conservation les enregistrements ?",
+        q: "Combien de temps les enregistrements sont-ils conservés ?",
         a: "Avec un disque 1 To, environ 30 jours pour 4 caméras 4MP en continu. En détection de mouvement, 60 à 90 jours.",
       },
       {
@@ -59,11 +59,11 @@ export const FALLBACK_SERVICES: FallbackService[] = [
     title: "Solaire & énergie",
     shortDesc: "Panneaux solaires, batteries, onduleurs, kits complets clé en main.",
     description:
-      "AGBE-TECH dimensionne et installe des systèmes solaires photovoltaïques pour maisons, entreprises et sites isolés au Togo. Nous travaillons avec des marques tierces de référence (Growatt, Victron Energy, Canadian Solar, Jinko) et fournissons des solutions hybrides avec batterie LiFePO4 pour assurer une autonomie 24h même en saison des pluies. Du panneau solaire au régulateur, en passant par l'onduleur et le système de monitoring, nous vous accompagnons de A à Z, avec un retour sur investissement moyen de 4 à 7 ans.",
+      "AGBE-TECH dimensionne et installe des systèmes solaires photovoltaïques pour maisons, entreprises et sites isolés au Togo. Nous travaillons avec des marques de référence (Growatt, Victron Energy, Canadian Solar, Jinko) et fournissons des solutions hybrides avec batterie LiFePO4 pour assurer une autonomie 24h même en saison des pluies.\n\nDu panneau solaire au régulateur, en passant par l'onduleur et le système de monitoring, nous vous accompagnons de A à Z, avec un retour sur investissement moyen de 4 à 7 ans.",
     icon: "sun",
     benefits: [
       "Dimensionnement sur-mesure (1 à 50 kWc)",
-      "Marques premium : Growatt, Victron, Canadian Solar",
+      "Marques de référence : Growatt, Victron, Canadian Solar",
       "Batteries LiFePO4 longue durée (6000 cycles)",
       "Monitoring mobile temps réel",
       "Garantie panneaux 10 à 25 ans",

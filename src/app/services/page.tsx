@@ -9,7 +9,7 @@ import { safeParse } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Services AGBE-TECH — Réseau, vidéosurveillance, solaire, électricité à Lomé",
+  title: "Services tech & énergie à Lomé",
   description:
     "Nos services au Togo : installation caméras IP, panneaux solaires, câblage réseau, électricité bâtiment, liaisons longue distance. Devis gratuit, intervention à Lomé et toutes régions.",
   alternates: { canonical: "/services" },

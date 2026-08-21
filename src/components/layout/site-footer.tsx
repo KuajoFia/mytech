@@ -39,6 +39,19 @@ export function SiteFooter() {
 
   if (pathname?.startsWith("/admin")) return null;
 
+  // Hide the "Prêt à démarrer" CTA strip on transactional / legal / auth pages
+  // where it's inappropriate (client is already in a flow).
+  const HIDE_CTA_PREFIXES = [
+    "/panier",
+    "/checkout",
+    "/cgv",
+    "/mentions-legales",
+    "/confidentialite",
+    "/compte",
+    "/admin",
+  ];
+  const showCTAStrip = !HIDE_CTA_PREFIXES.some((p) => pathname?.startsWith(p));
+
   async function subscribeNewsletter(e: React.FormEvent) {
     e.preventDefault();
     if (!email) return;
@@ -70,7 +83,8 @@ export function SiteFooter() {
       {/* Decorative mesh background */}
       <div className="absolute inset-0 bg-mesh opacity-30 pointer-events-none" />
 
-      {/* CTA strip */}
+      {/* CTA strip — hidden on transactional / legal / auth pages */}
+      {showCTAStrip && (
       <div className="relative bg-gradient-to-r from-brand to-brand-light text-white">
         <div className="container mx-auto px-4 py-8 grid gap-4 md:grid-cols-2 items-center">
           <div>
@@ -99,6 +113,7 @@ export function SiteFooter() {
           </div>
         </div>
       </div>
+      )}
 
       {/* Main footer */}
       <div className="relative container mx-auto px-4 py-14 grid gap-10 md:grid-cols-2 lg:grid-cols-5">

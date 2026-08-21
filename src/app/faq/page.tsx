@@ -19,7 +19,7 @@ import {
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "FAQ — Questions fréquentes | AGBE-TECH",
+  title: "FAQ — Questions fréquentes",
   description:
     "Réponses aux questions fréquentes sur nos services, la boutique en ligne, les paiements, livraisons et garanties AGBE-TECH à Lomé, Togo.",
   alternates: { canonical: "/faq" },
@@ -32,7 +32,7 @@ const FAQS = [
     items: [
       {
         q: "Comment passer une commande sur la boutique ?",
-        a: "Sélectionnez vos produits, ajoutez-les au panier, puis suivez les 4 étapes du tunnel de commande : informations client, livraison, paiement, confirmation. Vous recevez un email de confirmation avec votre numéro de commande BC-2026-XXX.",
+        a: "Sélectionnez vos produits, ajoutez-les au panier, puis suivez les 4 étapes du tunnel d'achat : informations client, livraison, paiement, confirmation. Vous recevez un email de confirmation avec votre numéro de commande (format BC-AAAA-XXX).",
       },
       {
         q: "Puis-je commander sans créer de compte ?",
@@ -54,11 +54,11 @@ const FAQS = [
     items: [
       {
         q: "Quels moyens de paiement acceptez-vous ?",
-        a: "T-Money, Flooz (Moov Money), virement bancaire, et espèces à la livraison ou en magasin. Les paiements mobile money sont sécurisés via Kkiapay et CinetPay.",
+        a: "T-Money (Moov), Flooz (Togocom), virement bancaire, et espèces à la livraison ou en magasin. Les paiements mobile money sont sécurisés via Kkiapay et CinetPay.",
       },
       {
         q: "Le paiement est-il sécurisé ?",
-        a: "Oui, les paiements sont traités par les agrégateurs Kkiapay et CinetPay, certifiés PCI-DSS. Nous ne stockons jamais vos données bancaires. La confirmation se fait via webhook signé HMAC.",
+        a: "Oui, les paiements sont traités par les agrégateurs Kkiapay et CinetPay, certifiés PCI-DSS. Nous ne stockons jamais vos données bancaires. La confirmation se fait via notification sécurisée vérifiée cryptographiquement.",
       },
       {
         q: "Quand ma commande est-elle débitée ?",
@@ -110,7 +110,7 @@ const FAQS = [
       },
       {
         q: "Vos installations sont-elles garanties ?",
-        a: "Oui, toutes nos installations sont garanties 2 ans (main d'œuvre). Pour les panneaux solaires, garantie constructeur 10-25 ans. Pour les batteries LiFePO4, 5 ans.",
+        a: "Oui, toutes nos installations sont garanties 5 ans (pièces et main-d'œuvre). Pour les panneaux solaires, garantie constructeur jusqu'à 25 ans. Pour les batteries LiFePO4, 5 ans.",
       },
     ],
   },

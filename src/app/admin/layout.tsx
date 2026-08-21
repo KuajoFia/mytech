@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
+
+export const metadata: Metadata = {
+  title: "Back-office",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const hdrs = await headers();

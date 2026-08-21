@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 
 export const metadata: Metadata = {
-  title: "Réalisations AGBE-TECH — Installations solaires, vidéosurveillance, réseau à Lomé",
+  title: "Réalisations — Installations solaires, vidéosurveillance, réseau à Lomé",
   description:
     "Découvrez nos chantiers livrés au Togo : installations solaires, systèmes de vidéosurveillance, câblage réseau, mise aux normes électriques, liaisons faisceau hertzien.",
   alternates: { canonical: "/realisations" },
@@ -51,7 +51,7 @@ export default async function RealisationsPage({ searchParams }: { searchParams:
             Des projets concrets, livrés et opérationnels
           </h1>
           <p className="mt-4 text-white/85 text-lg">
-            Plus de 500 chantiers livrés au Togo depuis 2014. Découvrez quelques unes de nos
+            Plus de 500 chantiers livrés au Togo depuis 2014. Découvrez quelques-unes de nos
             installations : solaire, vidéosurveillance, réseau, électricité, télécom.
           </p>
         </div>

@@ -41,7 +41,7 @@ const PROCESS_STEPS = [
 ];
 
 const POINTS_FORTS = [
-  { icon: Wrench, title: "Professionnel expert", desc: "Techniciens certifiés, plus de 10 ans d'expérience au Togo." },
+  { icon: Wrench, title: "Professionnel expert", desc: "Techniciens certifiés, plus de 12 ans d'expérience au Togo." },
   { icon: CheckCircle2, title: "Travail de qualité", desc: "Composants certifiés CE/NFC, installations garanties 5 ans." },
   { icon: Clock, title: "Service rapide et fiable", desc: "Astreinte 7j/7, intervention sous 48h pour les urgences." },
 ];
@@ -122,7 +122,7 @@ export default async function HomePage() {
 
             <div className="mt-12 grid grid-cols-3 gap-6 max-w-lg animate-fade-in-up" style={{ animationDelay: "300ms" }}>
               <div>
-                <div className="text-4xl md:text-5xl font-extrabold text-accent-yellow leading-none">10+</div>
+                <div className="text-4xl md:text-5xl font-extrabold text-accent-yellow leading-none">12+</div>
                 <div className="text-xs md:text-sm text-white/70 mt-2">ans d'expérience</div>
               </div>
               <div className="border-l border-white/20 pl-6">
@@ -172,7 +172,7 @@ export default async function HomePage() {
       <section className="py-16 md:py-20">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <Badge variant="outline" className="mb-3 text-brand border-brand">Nos 5 expertises</Badge>
+            <Badge variant="outline" className="mb-3 text-brand border-brand">Nos 6 expertises</Badge>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
               Une expertise complète, sous un même toit
             </h2>
@@ -380,7 +380,7 @@ export default async function HomePage() {
             </Card>
             <Card className="bg-white/10 border-white/20 backdrop-blur mt-6">
               <CardContent className="p-6 text-center">
-                <div className="font-display text-4xl font-extrabold text-accent-yellow">25 ans</div>
+                <div className="font-display text-4xl font-extrabold text-accent-yellow">Jusqu'à 25 ans</div>
                 <div className="text-xs mt-1">garantie panneaux solaires</div>
               </CardContent>
             </Card>

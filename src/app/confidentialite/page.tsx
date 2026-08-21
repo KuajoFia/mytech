@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Politique de confidentialité — AGBE-TECH",
+  title: "Politique de confidentialité",
   description: "Politique de confidentialité AGBE-TECH, conforme à la loi togolaise n° 2011-010.",
   alternates: { canonical: "/confidentialite" },
 };

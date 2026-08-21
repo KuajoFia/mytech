@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Paiement annulé | AGBE-TECH",
+  title: "Paiement annulé",
 };
 
 export default function CheckoutCancelPage() {

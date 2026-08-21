@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 
 export const metadata: Metadata = {
-  title: "Blog & conseils — AGBE-TECH",
+  title: "Blog & conseils techniques",
   description:
     "Conseils techniques sur l'installation de caméras, panneaux solaires, câblage réseau et électricité à Lomé, Togo.",
   alternates: { canonical: "/blog" },

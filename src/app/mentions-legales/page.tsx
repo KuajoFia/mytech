@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Mentions légales — AGBE-TECH",
+  title: "Mentions légales",
   description: "Mentions légales d'AGBE-TECH, entreprise togolaise de solutions technologiques et énergétiques.",
   alternates: { canonical: "/mentions-legales" },
 };
@@ -29,8 +29,8 @@ export default async function LegalPage() {
             Adresse : {settings?.address ?? "Kégué, Rue Kpacha — Lomé, Togo"}<br />
             Téléphone : {settings?.phone1 ?? "+228 98 89 79 14"} / {settings?.phone2 ?? "+228 93 90 77 06"}<br />
             Email : {settings?.email ?? "contact@agbe-tech.com"}<br />
-            {settings?.rccm && <>RCCM : {settings.rccm}<br /></>}
-            {settings?.nif && <>NIF : {settings.nif}<br /></>}
+            RCCM : {settings?.rccm || "à compléter"}<br />
+            NIF : {settings?.nif || "à compléter"}<br />
             TVA : {Math.round((settings?.vatRate ?? 0.18) * 100)} %
           </p>
         </section>
@@ -43,9 +43,9 @@ export default async function LegalPage() {
         <section>
           <h2 className="font-display text-xl font-bold mb-2">Hébergement</h2>
           <p>
-            Le site est hébergé par un prestataire d&apos;hébergement web professionnel respectant
-            les normes en vigueur. Les coordonnées de l&apos;hébergeur peuvent être obtenues sur
-            simple demande à <a href={`mailto:${settings?.email ?? "contact@agbe-tech.com"}`} className="text-brand hover:underline">{settings?.email ?? "contact@agbe-tech.com"}</a>.
+            Le site est hébergé par <strong>Vercel Inc.</strong>, 340 S Lemon Ave #4133, Walnut, CA 91789, USA.
+            Pour toute demande relative à l&apos;hébergement, contactez Vercel via{" "}
+            <a href="https://vercel.com/abuse" target="_blank" rel="noopener noreferrer" className="text-brand hover:underline">leur formulaire de signalement</a>.
           </p>
         </section>
 

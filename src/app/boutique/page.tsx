@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 
 export const metadata: Metadata = {
-  title: "Boutique AGBE-TECH — Caméras, solaire, réseau, électricité à Lomé",
+  title: "Boutique — Caméras, solaire, réseau, électricité à Lomé",
   description:
     "Achetez en ligne caméras IP, panneaux solaires, batteries, onduleurs, switchs, câbles Cat6, disjoncteurs. Paiement T-Money & Flooz. Livraison Lomé & tout le Togo.",
   alternates: { canonical: "/boutique" },
@@ -96,8 +96,14 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
             {currentCat ? currentCat.name : "Catalogue complet"}
           </h1>
           <p className="mt-3 text-white/80 text-base max-w-2xl">
-            {products.length} produit{products.length > 1 ? "s" : ""} disponible{products.length > 1 ? "s" : ""} ·
-            Paiement T-Money & Flooz · Livraison Lomé & tout le Togo
+            {dbError ? (
+              <>Catalogue en cours d&apos;ajout — <Link href="/contact" className="underline">contactez-nous</Link> pour nos références disponibles.</>
+            ) : (
+              <>
+                {products.length} produit{products.length > 1 ? "s" : ""} disponible{products.length > 1 ? "s" : ""} ·
+                Paiement T-Money & Flooz · Livraison Lomé & tout le Togo
+              </>
+            )}
           </p>
         </div>
       </section>

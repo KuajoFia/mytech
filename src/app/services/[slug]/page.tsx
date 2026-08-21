@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const service = await db.service.findUnique({ where: { slug } });
     if (service) {
-      title = `${service.title} à Lomé — Devis gratuit | AGBE-TECH`;
+      title = `${service.title} à Lomé — Devis gratuit`;
       description = service.shortDesc;
       return {
         title,
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const fallback = getFallbackService(slug);
   if (fallback) {
     return {
-      title: `${fallback.title} à Lomé — Devis gratuit | AGBE-TECH`,
+      title: `${fallback.title} à Lomé — Devis gratuit`,
       description: fallback.shortDesc,
       alternates: { canonical: `/services/${fallback.slug}` },
     };

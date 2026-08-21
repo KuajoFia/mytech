@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
-  title: "À propos — AGBE-TECH, entreprise togolaise tech & énergie",
+  title: "À propos — entreprise togolaise tech & énergie",
   description:
     "AGBE-TECH est une entreprise togolaise basée à Lomé, spécialisée en réseau, vidéosurveillance, électricité bâtiment, solaire et télécom. Découvrez notre histoire, nos valeurs et notre équipe.",
   alternates: { canonical: "/a-propos" },
@@ -72,7 +72,7 @@ export default function AboutPage() {
               post-livraison.
             </p>
             <p className="text-foreground/90 leading-relaxed">
-              Notre baseline résume notre promesse : <strong className="text-brand">Connecter, Sécuriser,
+              Notre signature résume notre promesse : <strong className="text-brand">Connecter, Sécuriser,
               Alimenter, Performer.</strong>
             </p>
           </div>

@@ -3,14 +3,23 @@ import { CheckCircle2, Package, Phone, Home, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { db } from "@/lib/db";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Paiement confirmé — Merci ! | AGBE-TECH",
-};
-
 type SearchParams = Promise<{ orderId?: string; paid?: string }>;
+
+export async function generateMetadata({ searchParams }: { searchParams: SearchParams }): Promise<Metadata> {
+  const sp = await searchParams;
+  const paid = sp.paid === "1";
+  return {
+    title: paid ? "Paiement confirmé — Merci !" : "Commande en attente de confirmation",
+    description: paid
+      ? "Votre paiement a été confirmé avec succès. Merci pour votre confiance."
+      : "Votre commande est enregistrée, paiement en cours de vérification.",
+    robots: { index: false, follow: false },
+  };
+}
 
 export default async function CheckoutSuccessPage({ searchParams }: { searchParams: SearchParams }) {
   const sp = await searchParams;

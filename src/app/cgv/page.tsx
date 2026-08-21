@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Conditions Générales de Vente — AGBE-TECH",
+  title: "Conditions Générales de Vente",
   description: "CGV AGBE-TECH : commandes, paiements, livraisons, garanties et réclamations.",
   alternates: { canonical: "/cgv" },
 };
@@ -28,7 +28,7 @@ export default function CGVPage() {
             Les commandes peuvent être passées en ligne (boutique), par téléphone, WhatsApp ou
             en magasin. Toute commande vaut acceptation du prix et des caractéristiques du produit.
             AGBE-TECH se réserve le droit d&apos;annuler ou refuser une commande en cas de litige
-            paiement, de rupture de stock ou de suspicion frauduleuse.
+            paiement, de rupture de stock ou de suspicion de fraude.
           </p>
         </section>
 
@@ -37,7 +37,7 @@ export default function CGVPage() {
           <p>
             Les prix sont indiqués en FCFA TTC, TVA 18 % incluse. Une remise commerciale peut être
             accordée par AGBE-TECH (visible sur la facture proforma). Les frais de livraison sont
-            indiqués au checkout et varient selon la zone (Lomé, environs, autres régions).
+            indiqués lors du paiement et varient selon la zone (Lomé, environs, autres régions).
           </p>
         </section>
 
@@ -69,7 +69,7 @@ export default function CGVPage() {
         <section>
           <h2 className="font-display text-xl font-bold mb-2">Article 6 — Proforma</h2>
           <p>
-            La facture proforma est valable 15 jours (paramétrable) à compter de son émission.
+            La facture proforma est valable 15 jours à compter de son émission.
             Elle ne tient pas lieu de facture définitive. Le stock n&apos;est réservé qu&apos;après
             paiement et confirmation.
           </p>
@@ -80,7 +80,7 @@ export default function CGVPage() {
           <p>
             Les produits vendus bénéficient de la garantie fabricant (variable selon le produit,
             indiquée sur la fiche). Les installations réalisées par AGBE-TECH sont garanties 5 ans
-            (pièces et main d&apos;œuvre). La garantie ne couvre pas les dommages liés à une
+            (pièces et main-d&apos;œuvre). La garantie ne couvre pas les dommages liés à une
             utilisation non conforme, à une mauvaise manipulation ou à un cas fortuit.
           </p>
         </section>
@@ -88,7 +88,7 @@ export default function CGVPage() {
         <section>
           <h2 className="font-display text-xl font-bold mb-2">Article 8 — Rétractation et retours</h2>
           <p>
-            Pour les produits achetés en boutique en ligne, vous disposez d&apos;un délai de 7 jours
+            Pour les produits achetés en boutique en ligne, vous disposez d&apos;un délai de 14 jours
             à compter de la livraison pour exercer votre droit de rétractation. Les produits doivent
             être retournés neufs, dans leur emballage d&apos;origine. Les frais de retour sont à la
             charge du client, sauf défaut produit.
