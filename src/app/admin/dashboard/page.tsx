@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 
 export default async function AdminDashboard() {
-  let orders: any = { _sum: { total: 0 }, _count: 0 };
+  let orders: any;
   let recentOrders: any[] = [];
   let products: any[] = [];
   let clients: any[] = [];
@@ -53,8 +53,8 @@ export default async function AdminDashboard() {
     dbError = true;
   }
 
-  const revenue = orders._sum.total ?? 0;
-  const ordersCount = orders._count;
+  const revenue = orders?._sum?.total ?? 0;
+  const ordersCount = orders?._count ?? 0;
 
   const stats = [
     { label: "Revenus (TTC)", value: formatFCFA(revenue), icon: TrendingUp, color: "text-emerald-600" },
