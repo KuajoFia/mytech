@@ -11,9 +11,18 @@ import { db } from "@/lib/db";
 export const dynamic = "force-dynamic";
 export const maxDuration = 300; // 5 min
 
-// All CREATE TABLE / CREATE INDEX / INSERT statements as separate strings.
-// Order matters: tables with FKs must come after their parents.
+// All CREATE TYPE / CREATE TABLE / CREATE INDEX / INSERT statements as separate strings.
+// Order matters: enums first, then tables with FKs after their parents.
 const STATEMENTS: string[] = [
+  // ── Enums (PostgreSQL types) ───────────────────
+  `DO $$ BEGIN CREATE TYPE "UserRole" AS ENUM ('CLIENT', 'PRO', 'ADMIN', 'STAFF'); EXCEPTION WHEN duplicate_object THEN NULL; END $$`,
+  `DO $$ BEGIN CREATE TYPE "ProductStatus" AS ENUM ('ACTIVE', 'DRAFT', 'ARCHIVED'); EXCEPTION WHEN duplicate_object THEN NULL; END $$`,
+  `DO $$ BEGIN CREATE TYPE "PricingMode" AS ENUM ('PRICE', 'ON_REQUEST'); EXCEPTION WHEN duplicate_object THEN NULL; END $$`,
+  `DO $$ BEGIN CREATE TYPE "OrderStatus" AS ENUM ('QUOTE_REQUESTED', 'PROFORMA_ISSUED', 'ORDERED', 'AWAITING_PAYMENT', 'PAID', 'PREPARING', 'AWAITING_DELIVERY', 'DELIVERING', 'DELIVERED', 'CANCELLED', 'RETURNED'); EXCEPTION WHEN duplicate_object THEN NULL; END $$`,
+  `DO $$ BEGIN CREATE TYPE "DeliveryMode" AS ENUM ('PICKUP_STORE', 'LOME_DELIVERY', 'OTHER_REGIONS'); EXCEPTION WHEN duplicate_object THEN NULL; END $$`,
+  `DO $$ BEGIN CREATE TYPE "QuoteStatus" AS ENUM ('DRAFT', 'ISSUED', 'APPROVED', 'REFUSED', 'EXPIRED', 'CONVERTED'); EXCEPTION WHEN duplicate_object THEN NULL; END $$`,
+  `DO $$ BEGIN CREATE TYPE "DocumentType" AS ENUM ('ACKNOWLEDGE', 'PROFORMA', 'PURCHASE_ORDER', 'PAYMENT_REMINDER', 'RECEIPT', 'DELIVERY_NOTE', 'CREDIT_NOTE'); EXCEPTION WHEN duplicate_object THEN NULL; END $$`,
+
   // ── Auth ─────────────────────────────────────────
   `CREATE TABLE IF NOT EXISTS "User" (
     id TEXT PRIMARY KEY,
@@ -476,6 +485,17 @@ const STATEMENTS: string[] = [
           '$2b$10$jqMzpwVr7IcwzS9VzS4iV.ZONXlSoPaNCECOJz6zuDYwRCwa/khfW',
           CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
    WHERE NOT EXISTS (SELECT 1 FROM "User" WHERE email = 'admin@agbe-tech.com')`,
+
+  // ── Convert TEXT columns to enum types ─────────
+  // Required because Prisma's schema uses enums (UserRole, OrderStatus, etc.)
+  // and tries to cast text values to the enum type.
+  `ALTER TABLE "User" ALTER COLUMN "role" TYPE "UserRole" USING "role"::"UserRole"`,
+  `ALTER TABLE "Product" ALTER COLUMN "status" TYPE "ProductStatus" USING "status"::"ProductStatus"`,
+  `ALTER TABLE "Product" ALTER COLUMN "pricingMode" TYPE "PricingMode" USING "pricingMode"::"PricingMode"`,
+  `ALTER TABLE "Order" ALTER COLUMN "status" TYPE "OrderStatus" USING "status"::"OrderStatus"`,
+  `ALTER TABLE "Order" ALTER COLUMN "deliveryMode" TYPE "DeliveryMode" USING "deliveryMode"::"DeliveryMode"`,
+  `ALTER TABLE "Quote" ALTER COLUMN "status" TYPE "QuoteStatus" USING "status"::"QuoteStatus"`,
+  `ALTER TABLE "Document" ALTER COLUMN "type" TYPE "DocumentType" USING "type"::"DocumentType"`,
 ];
 
 export async function GET(req: NextRequest) {
