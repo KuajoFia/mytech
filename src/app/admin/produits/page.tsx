@@ -6,6 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Edit3, Trash2 } from "lucide-react";
 import { formatFCFA, safeParse } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
+
 export default async function AdminProductsPage() {
   const products = await db.product.findMany({
     orderBy: { createdAt: "desc" },

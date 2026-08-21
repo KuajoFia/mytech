@@ -22,6 +22,8 @@ import { Badge } from "@/components/ui/badge";
 import { formatFCFA, safeParse } from "@/lib/utils";
 import { ProductCard } from "@/components/shop/product-card";
 
+export const dynamic = "force-dynamic";
+
 const SERVICE_ICONS: Record<string, React.ElementType> = {
   network: Network,
   antenna: Radio,

@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { ORDER_STATUS_LABELS, ORDER_STATUS_COLORS, formatFCFA, formatDate } from "@/lib/utils";
 import type { OrderStatus } from "@prisma/client";
 
+export const dynamic = "force-dynamic";
+
+
 export default async function AdminOrdersPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
   const sp = await searchParams;
   const statusFilter: OrderStatus | undefined =

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Mentions légales — AGBE-TECH",
   description: "Mentions légales d'AGBE-TECH, entreprise togolaise de solutions technologiques et énergétiques.",

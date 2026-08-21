@@ -10,6 +10,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 
+export const dynamic = "force-dynamic";
+
+
 export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({

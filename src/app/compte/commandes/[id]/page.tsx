@@ -24,6 +24,9 @@ import {
 } from "lucide-react";
 import { OrderActions } from "@/components/account/order-actions";
 
+export const dynamic = "force-dynamic";
+
+
 const DOC_TYPES = [
   { key: "ACKNOWLEDGE", label: "Accusé de réception", icon: FileText },
   { key: "PROFORMA", label: "Proforma", icon: FileText },

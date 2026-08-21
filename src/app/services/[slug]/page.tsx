@@ -9,6 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { safeParse } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
+
 const SERVICE_ICONS: Record<string, React.ElementType> = {
   network: Network,
   antenna: Radio,

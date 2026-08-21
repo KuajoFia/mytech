@@ -6,6 +6,9 @@ import { ProductCard } from "@/components/shop/product-card";
 import { ShopFilters } from "@/components/shop/shop-filters";
 import { Search } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
+
 export const metadata: Metadata = {
   title: "Boutique AGBE-TECH — Caméras, solaire, réseau, électricité à Lomé",
   description:

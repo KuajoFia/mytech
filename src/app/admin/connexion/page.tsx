@@ -9,6 +9,9 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { toast } from "sonner";
 
+export const dynamic = "force-dynamic";
+
+
 export default function AdminLoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ identifier: "", password: "" });

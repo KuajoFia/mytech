@@ -6,6 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ORDER_STATUS_LABELS, ORDER_STATUS_COLORS, formatFCFA, formatDate } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
+
 export default async function AdminDashboard() {
   const [
     orders,

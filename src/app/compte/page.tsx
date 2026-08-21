@@ -8,6 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { ORDER_STATUS_LABELS, ORDER_STATUS_COLORS, formatFCFA, formatDate } from "@/lib/utils";
 import { Package, FileText, MapPin, User, ChevronRight, LogOut } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
+
 export default async function AccountDashboard() {
   const session = await getSession();
   if (!session) redirect("/compte/connexion");

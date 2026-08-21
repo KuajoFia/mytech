@@ -2,6 +2,9 @@ import { db } from "@/lib/db";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { SettingsForm } from "@/components/admin/settings-form";
 
+export const dynamic = "force-dynamic";
+
+
 export default async function AdminSettingsPage() {
   const settings = await db.settings.findFirst();
   return (

@@ -4,6 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatFCFA, formatDate } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
+
 export default async function AdminClientsPage() {
   const clients = await db.user.findMany({
     where: { role: { in: ["CLIENT", "PRO"] } },

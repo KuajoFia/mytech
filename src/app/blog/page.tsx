@@ -6,6 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, ArrowRight } from "lucide-react";
 import { formatDate, safeParse } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
+
 export const metadata: Metadata = {
   title: "Blog & conseils — AGBE-TECH",
   description:
@@ -14,7 +17,6 @@ export const metadata: Metadata = {
 };
 
 // ISR — refresh blog list every hour
-export const revalidate = 3600;
 
 export default async function BlogPage() {
   const posts = await db.blogPost.findMany({

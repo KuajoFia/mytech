@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 import { DevisStatusUpdater } from "@/components/admin/devis-status-updater";
 
+export const dynamic = "force-dynamic";
+
+
 export default async function AdminDevisPage() {
   const requests = await db.serviceRequest.findMany({
     orderBy: { createdAt: "desc" },

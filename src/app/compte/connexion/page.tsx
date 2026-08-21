@@ -10,6 +10,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Phone } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
+
 export default function LoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ identifier: "", password: "" });

@@ -12,6 +12,9 @@ import {
 } from "@/lib/utils";
 import { OrderStatusUpdater } from "@/components/admin/order-status-updater";
 
+export const dynamic = "force-dynamic";
+
+
 const ALL_STATUSES = [
   "QUOTE_REQUESTED",
   "PROFORMA_ISSUED",

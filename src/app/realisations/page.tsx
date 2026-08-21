@@ -6,6 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, MapPin, Calendar } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
+
 export const metadata: Metadata = {
   title: "Réalisations AGBE-TECH — Installations solaires, vidéosurveillance, réseau à Lomé",
   description:
