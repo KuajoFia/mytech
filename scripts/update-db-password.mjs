@@ -8,8 +8,7 @@ const API = "https://api.vercel.com";
 
 // Pooler IPv4 — Session mode (port 5432) — correct region (eu-central-1)
 // User format: postgres.{project_ref} (mandatory for Supabase pooler)
-// Password is set by user via env var DB_PASSWORD
-const PASSWORD = process.env.DB_PASSWORD || "Viviane@1311";
+const PASSWORD = process.env.DB_PASSWORD || "Lapaix@1311@";
 const NEW_DATABASE_URL = `postgresql://postgres.fkjomoctlukymwrzkcqj:${encodeURIComponent(PASSWORD)}@aws-0-eu-central-1.pooler.supabase.com:5432/postgres`;
 console.log("URL:", NEW_DATABASE_URL.replace(/:[^:@]+@/, ":***@"));
 
