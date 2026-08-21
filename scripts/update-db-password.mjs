@@ -6,10 +6,11 @@ const PROJECT_ID = "prj_BZGawfJim2tMtH0kMgkDEY9SzFZl";
 const TEAM_ID = "team_9rSN6AFXwOAHBSB6yGTKLHua";
 const API = "https://api.vercel.com";
 
-// Pooler IPv4 — Session mode (port 5432) — correct region (eu-central-1)
-// User format: postgres.{project_ref} (mandatory for Supabase pooler)
+// Pooler IPv4 — Transaction mode (port 6543) — supports more concurrent connections
+// Required for Supabase free tier (max 15 sessions in session mode, unlimited in transaction mode)
+// Prisma requires ?pgbouncer=true&connection_limit=1 for transaction mode
 const PASSWORD = process.env.DB_PASSWORD || "Lapaix@1311@";
-const NEW_DATABASE_URL = `postgresql://postgres.fkjomoctlukymwrzkcqj:${encodeURIComponent(PASSWORD)}@aws-0-eu-central-1.pooler.supabase.com:5432/postgres`;
+const NEW_DATABASE_URL = `postgresql://postgres.fkjomoctlukymwrzkcqj:${encodeURIComponent(PASSWORD)}@aws-0-eu-central-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1&pool_timeout=20`;
 console.log("URL:", NEW_DATABASE_URL.replace(/:[^:@]+@/, ":***@"));
 
 async function getExistingEnvs() {
